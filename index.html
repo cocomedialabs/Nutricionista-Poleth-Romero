@@ -1,0 +1,3136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poleth Romero | Nutricionista</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════
+   VARIABLES & RESET
+═══════════════════════════════════════ */
+:root {
+  --verde:     #1a4428;
+  --verde-mid: #2d6a44;
+  --verde-claro:#4a9162;
+  --crema:     #f7f3ed;
+  --crema-dark:#ede8df;
+  --dorado:    #c9a96e;
+  --dorado-claro:#e8d5b0;
+  --blanco:    #fdfaf6;
+  --texto:     #2a2a2a;
+  --gris:      #8a8a8a;
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body:    'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--crema);
+  color: var(--texto);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ═══════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════ */
+.cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  background: var(--verde);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+}
+.cursor-ring {
+  position: fixed;
+  width: 40px; height: 40px;
+  border: 1.5px solid var(--dorado);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease-out, width 0.3s, height 0.3s, opacity 0.3s;
+}
+body:has(a:hover) .cursor, body:has(button:hover) .cursor { width:6px; height:6px; background: var(--dorado); }
+body:has(a:hover) .cursor-ring, body:has(button:hover) .cursor-ring { width:60px; height:60px; border-color: var(--verde); }
+
+/* ═══════════════════════════════════════
+   LOADING SCREEN
+═══════════════════════════════════════ */
+#loader {
+  position: fixed; inset: 0;
+  background: var(--verde);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  transition: opacity 0.8s ease, visibility 0.8s;
+}
+#loader.hidden { opacity:0; visibility:hidden; }
+.loader-text {
+  font-family: var(--font-display);
+  color: var(--crema);
+  font-size: 52px;
+  font-weight: 300;
+  letter-spacing: 6px;
+  opacity: 0;
+  animation: loaderFade 0.8s 0.3s forwards;
+}
+.loader-sub {
+  font-family: var(--font-body);
+  color: var(--dorado);
+  font-size: 13px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: loaderFade 0.8s 0.6s forwards;
+}
+.loader-bar {
+  width: 200px; height: 1px;
+  background: rgba(255,255,255,0.15);
+  margin-top: 10px;
+  overflow: hidden;
+}
+.loader-bar-fill {
+  height: 100%;
+  background: var(--dorado);
+  width: 0;
+  animation: loaderBar 1.8s 0.4s ease-out forwards;
+}
+@keyframes loaderFade { to { opacity:1; } }
+@keyframes loaderBar  { to { width:100%; } }
+
+/* ═══════════════════════════════════════
+   NAV
+═══════════════════════════════════════ */
+nav {
+  position: fixed; top:0; left:0; right:0;
+  z-index: 1000;
+  padding: 24px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.5s, padding 0.5s, box-shadow 0.5s;
+}
+nav.scrolled {
+  background: rgba(247,243,237,0.96);
+  backdrop-filter: blur(12px);
+  padding: 16px 60px;
+  box-shadow: 0 1px 30px rgba(26,68,40,0.08);
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 14px;
+  text-decoration: none;
+}
+.nav-logo img { height: 54px; }
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--crema);
+  line-height: 1.2;
+  transition: color 0.4s;
+}
+nav.scrolled .nav-brand {
+  color: var(--verde);
+}
+.nav-brand span { display:block; font-size:11px; font-family: var(--font-body); letter-spacing:3px; text-transform:uppercase; color:var(--dorado); font-weight:400; }
+.nav-links { display:flex; gap:36px; align-items:center; }
+.nav-links a {
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--verde);
+  font-weight: 400;
+  position: relative;
+}
+.nav-links a::after {
+  content:''; position:absolute; bottom:-4px; left:0;
+  width:0; height:1px; background:var(--dorado);
+  transition: width 0.3s;
+}
+.nav-links a:hover::after { width:100%; }
+.nav-cta {
+  background: var(--verde);
+  color: var(--crema) !important;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-size: 12px !important;
+  letter-spacing: 2px;
+  transition: background 0.3s, transform 0.2s !important;
+}
+.nav-cta::after { display:none !important; }
+.nav-cta:hover { background: var(--verde-mid) !important; transform: translateY(-1px); }
+
+/* ═══════════════════════════════════════
+   HERO — FULLSCREEN CINEMATIC
+═══════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  background: var(--verde);
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Fondo con imagen y overlay */
+.hero-bg {
+  position: absolute; inset:0;
+  background: url('img/comida.jpg') center/cover no-repeat;
+  opacity: 0.18;
+}
+
+/* Partículas flotantes */
+.particles { position:absolute; inset:0; overflow:hidden; }
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--dorado);
+  opacity: 0;
+  animation: float-particle linear infinite;
+}
+
+@keyframes float-particle {
+  0%   { transform: translateY(100vh) scale(0); opacity:0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.3; }
+  100% { transform: translateY(-10vh) scale(1); opacity:0; }
+}
+
+/* Líneas decorativas */
+.hero-line {
+  position: absolute;
+  background: linear-gradient(to bottom, transparent, var(--dorado), transparent);
+  width: 1px;
+  opacity: 0.25;
+}
+
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  width: 100%;
+}
+
+.hero-text { }
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--dorado);
+  font-weight: 400;
+  margin-bottom: 28px;
+  display: flex; align-items:center; gap:16px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroReveal 0.8s 2.2s forwards;
+}
+.hero-eyebrow::before {
+  content: ''; display:block;
+  width: 40px; height: 1px; background: var(--dorado);
+}
+.hero-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 6vw, 84px);
+  font-weight: 300;
+  color: var(--crema);
+  line-height: 1.08;
+  letter-spacing: -1px;
+  margin-bottom: 30px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: heroReveal 1s 2.4s forwards;
+}
+.hero-h1 em {
+  font-style: italic;
+  color: var(--dorado-claro);
+}
+.hero-p {
+  font-size: 18px;
+  color: rgba(247,243,237,0.7);
+  line-height: 1.8;
+  max-width: 420px;
+  margin-bottom: 48px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroReveal 0.8s 2.6s forwards;
+}
+.hero-actions {
+  display: flex; gap: 20px; align-items:center;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroReveal 0.8s 2.8s forwards;
+}
+.btn-primary {
+  background: var(--dorado);
+  color: var(--verde);
+  padding: 16px 36px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: all 0.3s;
+  display: inline-flex; align-items: center; gap:10px;
+}
+.btn-primary:hover { background: var(--dorado-claro); transform: translateY(-3px); box-shadow: 0 20px 40px rgba(201,169,110,0.3); }
+.btn-ghost {
+  color: var(--crema);
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: inline-flex; align-items:center; gap:10px;
+  transition: gap 0.3s, color 0.3s;
+}
+.btn-ghost:hover { gap:16px; color: var(--dorado); }
+.btn-ghost .arrow { font-size:18px; }
+
+/* Hero foto */
+.hero-photo {
+  position: relative;
+  opacity: 0;
+  transform: translateX(60px);
+  animation: heroReveal 1.2s 2.5s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+.hero-photo img {
+  width: 100%;
+  max-height: 600px;
+  object-fit: cover;
+  border-radius: 200px 200px 40px 40px;
+  display: block;
+}
+.hero-photo-frame {
+  position: absolute;
+  inset: -16px;
+  border: 1px solid rgba(201,169,110,0.3);
+  border-radius: 210px 210px 48px 48px;
+  animation: breathe 4s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%,100% { transform: scale(1); opacity:0.4; }
+  50% { transform: scale(1.02); opacity:0.8; }
+}
+
+/* Stats flotantes */
+.hero-stat {
+  position: absolute;
+  background: rgba(247,243,237,0.96);
+  backdrop-filter: blur(10px);
+  padding: 16px 24px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+.hero-stat-num {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--verde);
+  line-height: 1;
+}
+.hero-stat-label {
+  font-size: 11px;
+  color: var(--gris);
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+.stat-1 { bottom: 60px; left: -40px; animation: floatStat 4s ease-in-out infinite; }
+.stat-2 { top: 40px; right: -30px; animation: floatStat 4s 1s ease-in-out infinite; }
+@keyframes floatStat {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction:column; align-items:center; gap:8px;
+  color: rgba(247,243,237,0.5);
+  font-size: 10px; letter-spacing:3px; text-transform:uppercase;
+  animation: scrollBounce 2s ease-in-out infinite;
+  z-index: 3;
+}
+.scroll-indicator-line {
+  width:1px; height:50px;
+  background: linear-gradient(to bottom, var(--dorado), transparent);
+}
+@keyframes scrollBounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(10px)} }
+@keyframes heroReveal { to { opacity:1; transform:translate(0); } }
+
+/* ═══════════════════════════════════════
+   STRIP — BANNER DESLIZANTE
+═══════════════════════════════════════ */
+.strip {
+  background: var(--dorado);
+  padding: 16px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.strip-inner {
+  display: inline-flex; gap:60px;
+  animation: stripScroll 20s linear infinite;
+}
+.strip-item {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-style: italic;
+  color: var(--verde);
+  display: flex; align-items:center; gap:60px;
+}
+.strip-item::after { content:'✦'; font-style:normal; font-size:14px; }
+@keyframes stripScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ═══════════════════════════════════════
+   SECTION BASE
+═══════════════════════════════════════ */
+.section-wrap {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 140px 60px;
+}
+
+.section-eyebrow {
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--dorado);
+  margin-bottom: 20px;
+  display: flex; align-items:center; gap:14px;
+}
+.section-eyebrow::before {
+  content:''; width:30px; height:1px; background:var(--dorado);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(38px, 4vw, 58px);
+  font-weight: 300;
+  color: var(--verde);
+  line-height: 1.12;
+  margin-bottom: 24px;
+}
+.section-title em { font-style:italic; color: var(--verde-claro); }
+
+/* ═══════════════════════════════════════
+   SOBRE MÍ
+═══════════════════════════════════════ */
+.sobre-section {
+  background: var(--blanco);
+  position: relative;
+  overflow: hidden;
+}
+.sobre-section::before {
+  content:'';
+  position:absolute; top:0; right:0;
+  width:45%; height:100%;
+  background: var(--crema-dark);
+  clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
+}
+.sobre-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: center;
+  position: relative; z-index:1;
+}
+.sobre-img-wrap {
+  position: relative;
+}
+.sobre-img-wrap img {
+  width: 100%;
+  border-radius: 40px;
+  display: block;
+  box-shadow: 0 40px 80px rgba(26,68,40,0.2);
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: all 1s cubic-bezier(0.22,1,0.36,1);
+}
+.sobre-img-wrap.show img { opacity:1; transform:translateX(0); }
+.sobre-img-deco {
+  position: absolute;
+  top: -20px; right: -20px;
+  width: 200px; height: 200px;
+  border: 1px solid var(--dorado);
+  border-radius: 40px;
+  opacity: 0.4;
+}
+.sobre-img-tag {
+  position: absolute;
+  bottom: 30px; right: -30px;
+  background: var(--verde);
+  color: var(--crema);
+  padding: 20px 28px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(26,68,40,0.25);
+}
+.sobre-img-tag-num {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--dorado);
+  line-height: 1;
+}
+.sobre-img-tag-text { font-size: 12px; color: rgba(247,243,237,0.7); margin-top:4px; letter-spacing:1px; }
+
+/* Chat bubbles refinadas */
+.chat-bubbles { display:flex; flex-direction:column; gap:16px; margin-top:32px; }
+.bubble {
+  background: var(--crema);
+  border: 1px solid var(--crema-dark);
+  border-radius: 0 20px 20px 20px;
+  padding: 18px 24px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--texto);
+  max-width: 90%;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  position: relative;
+}
+.bubble-typing { display:inline-flex; align-items:center; gap:5px; padding:16px 22px; }
+.bubble-typing span {
+  width:8px; height:8px;
+  background: var(--verde-claro);
+  border-radius:50%;
+  opacity:0.4;
+  animation: typing-bounce 1.2s infinite ease-in-out;
+}
+.bubble-typing span:nth-child(2){ animation-delay:0.2s; }
+.bubble-typing span:nth-child(3){ animation-delay:0.4s; }
+@keyframes typing-bounce {
+  0%,80%,100%{ transform:translateY(0); opacity:0.4; }
+  40%{ transform:translateY(-6px); opacity:1; }
+}
+
+/* ═══════════════════════════════════════
+   SERVICIOS — CARDS HOVER PREMIUM
+═══════════════════════════════════════ */
+.servicios-section { background: var(--crema); }
+.servicios-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 60px;
+}
+.servicio-card {
+  position: relative;
+  border-radius: 30px;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  cursor: pointer;
+}
+.servicio-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.22,1,0.36,1);
+}
+.servicio-card:hover img { transform: scale(1.08); }
+.servicio-overlay {
+  position: absolute; inset:0;
+  background: linear-gradient(to top, rgba(26,68,40,0.97) 0%, rgba(26,68,40,0.3) 60%, transparent 100%);
+  display: flex; flex-direction:column; justify-content:flex-end;
+  padding: 36px;
+  transition: all 0.5s ease;
+}
+.servicio-num {
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 300;
+  color: rgba(201,169,110,0.3);
+  line-height: 1;
+  transition: all 0.4s;
+}
+.servicio-card:hover .servicio-num { color: rgba(201,169,110,0.6); transform: translateY(-8px); }
+.servicio-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--crema);
+  margin-top: 8px;
+}
+.servicio-desc {
+  font-size: 14px;
+  color: rgba(247,243,237,0.7);
+  line-height: 1.6;
+  margin-top: 12px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, margin-top 0.4s;
+}
+.servicio-card:hover .servicio-desc { max-height: 100px; }
+
+/* ═══════════════════════════════════════
+   PROBLEMAS — MASONRY INTERACTIVO
+═══════════════════════════════════════ */
+.problemas-section { background: var(--verde); overflow:hidden; position:relative; }
+.problemas-section::before {
+  content: 'SALUD';
+  position:absolute; top:50%; left:50%;
+  transform: translate(-50%,-50%);
+  font-family: var(--font-display);
+  font-size: 300px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.03);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.problemas-section .section-title { color: var(--crema); }
+.problemas-section .section-eyebrow { color: var(--dorado); }
+.problemas-section .section-eyebrow::before { background: var(--dorado); }
+
+.problemas-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-top: 60px;
+}
+.problema-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.problema-card.show { opacity:1; transform:translateY(0); }
+.problema-card:nth-child(odd) { aspect-ratio: 3/4; }
+.problema-card:nth-child(even) { aspect-ratio: 3/3.5; align-self: end; }
+.problema-card img {
+  width:100%; height:100%;
+  object-fit:cover;
+  filter: saturate(0.7);
+  transition: filter 0.5s, transform 0.6s cubic-bezier(0.22,1,0.36,1);
+}
+.problema-card:hover img { filter: saturate(1); transform: scale(1.06); }
+.problema-overlay {
+  position:absolute; inset:0;
+  background: linear-gradient(to top, rgba(26,68,40,0.98) 0%, transparent 55%);
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding: 20px;
+}
+.problema-card:hover .problema-overlay { background: linear-gradient(to top, rgba(26,68,40,0.99) 0%, rgba(26,68,40,0.2) 100%); }
+.problema-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--crema);
+  font-weight: 400;
+}
+.problema-desc {
+  font-size: 12px;
+  color: rgba(247,243,237,0.65);
+  line-height: 1.5;
+  margin-top: 6px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.4s ease;
+}
+.problema-card:hover .problema-desc { opacity:1; transform:translateY(0); }
+
+/* ═══════════════════════════════════════
+   MODALIDADES
+═══════════════════════════════════════ */
+.modalidades-section { background: var(--blanco); }
+.modalidades-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 30px;
+  margin-top: 60px;
+}
+.modalidad-card {
+  border: 1px solid var(--crema-dark);
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s, transform 0.6s, box-shadow 0.4s, border-color 0.4s;
+}
+.modalidad-card.show { opacity:1; transform:translateY(0); }
+.modalidad-card:hover { box-shadow: 0 30px 60px rgba(26,68,40,0.12); border-color: var(--dorado); }
+.modalidad-img { width:100%; height:260px; object-fit:cover; display:block; transition: transform 0.6s cubic-bezier(0.22,1,0.36,1); }
+.modalidad-card:hover .modalidad-img { transform: scale(1.05); }
+.modalidad-body { padding: 30px; }
+.modalidad-icon { font-size:28px; margin-bottom:14px; }
+.modalidad-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--verde);
+  margin-bottom: 10px;
+}
+.modalidad-desc { font-size:14px; color:var(--gris); line-height:1.7; }
+.modalidad-tag {
+  display:inline-block;
+  margin-top:16px;
+  background: var(--crema);
+  color: var(--verde-mid);
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  padding:6px 16px;
+  border-radius:20px;
+}
+
+/* ═══════════════════════════════════════
+   TESTIMONIAL STRIP
+═══════════════════════════════════════ */
+.testimonial-section {
+  background: var(--crema-dark);
+  padding: 120px 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.testimonial-quote {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--verde);
+  max-width: 900px;
+  margin: 0 auto;
+  line-height: 1.3;
+  position: relative; z-index:1;
+}
+.testimonial-quote::before {
+  content: '"';
+  font-size: 200px;
+  color: rgba(26,68,40,0.06);
+  position: absolute;
+  top: -60px; left: -40px;
+  font-family: var(--font-display);
+  line-height: 1;
+  z-index: -1;
+}
+.testimonial-author {
+  margin-top: 32px;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dorado);
+}
+
+/* ═══════════════════════════════════════
+   DIAGNOSTICO IA
+═══════════════════════════════════════ */
+.diagnostico-section {
+  background: var(--blanco);
+  position: relative;
+  overflow: hidden;
+}
+.diagnostico-section::before {
+  content: '';
+  position: absolute; top: -200px; right: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(201,169,110,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.diagnostico-section::after {
+  content: '';
+  position: absolute; bottom: -150px; left: -150px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(26,68,40,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.diag-wrap {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative; z-index: 1;
+}
+.diag-steps-bar {
+  display: flex; align-items: center; justify-content: center; gap: 0;
+  margin-bottom: 52px;
+}
+.diag-step-dot {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--crema-dark); border: 2px solid var(--crema-dark);
+  display: flex; align-items:center; justify-content:center;
+  font-size: 13px; font-weight: 500; color: var(--gris);
+  transition: all 0.4s; flex-shrink: 0;
+}
+.diag-step-dot.active { background: var(--verde); border-color: var(--verde); color: white; }
+.diag-step-dot.done   { background: var(--dorado); border-color: var(--dorado); color: var(--verde); }
+.diag-step-line {
+  flex: 1; height: 2px; max-width: 60px;
+  background: var(--crema-dark); transition: background 0.4s;
+}
+.diag-step-line.done { background: var(--dorado); }
+.diag-card {
+  background: white; border-radius: 28px; padding: 48px 52px;
+  box-shadow: 0 8px 60px rgba(26,68,40,0.08); border: 1px solid var(--crema-dark);
+  min-height: 320px; display: flex; flex-direction: column; justify-content: space-between;
+}
+.diag-question-num {
+  font-size: 11px; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--dorado); margin-bottom: 16px;
+}
+.diag-question-text {
+  font-family: var(--font-display); font-size: clamp(22px, 3vw, 34px);
+  font-weight: 400; color: var(--verde); line-height: 1.3; margin-bottom: 36px;
+}
+.diag-options { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.diag-option {
+  background: var(--crema); border: 1.5px solid var(--crema-dark);
+  border-radius: 16px; padding: 16px 20px; font-size: 15px;
+  color: var(--texto); cursor: pointer; transition: all 0.25s;
+  text-align: left; font-family: var(--font-body);
+  display: flex; align-items: center; gap: 12px;
+}
+.diag-option:hover {
+  border-color: var(--verde-mid); background: white;
+  transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,68,40,0.08);
+}
+.diag-option.selected {
+  border-color: var(--verde); background: rgba(26,68,40,0.05);
+  color: var(--verde); font-weight: 500;
+}
+.diag-option-icon { font-size: 20px; flex-shrink: 0; }
+.diag-loading {
+  display: none; flex-direction: column; align-items: center;
+  justify-content: center; gap: 24px; padding: 60px 0;
+}
+.diag-loading.active { display: flex; }
+.diag-loading-orb {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: conic-gradient(var(--dorado), var(--verde), var(--dorado));
+  animation: orb-spin 1.5s linear infinite; position: relative;
+}
+.diag-loading-orb::after {
+  content: "✦"; position: absolute; inset: 6px; background: white;
+  border-radius: 50%; display: flex; align-items:center; justify-content:center;
+  font-size: 24px; animation: orb-spin 1.5s linear infinite reverse;
+}
+@keyframes orb-spin { to { transform: rotate(360deg); } }
+.diag-loading-text { font-family: var(--font-display); font-size: 22px; font-style: italic; color: var(--verde); }
+.diag-loading-sub {
+  font-size: 13px; color: var(--gris); letter-spacing: 2px; text-transform: uppercase;
+  animation: loading-pulse 1.5s ease-in-out infinite;
+}
+@keyframes loading-pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+.diag-result { display: none; }
+.diag-result.active { display: block; }
+.diag-result-header { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+.diag-result-avatar {
+  width: 52px; height: 52px; border-radius: 50%; background: var(--verde);
+  display: flex; align-items:center; justify-content:center;
+  color: var(--dorado); font-size: 22px; flex-shrink: 0;
+}
+.diag-result-from { font-weight: 500; color: var(--verde); font-size: 15px; }
+.diag-result-from span { display:block; font-size:12px; color:var(--gris); font-weight:400; }
+.diag-result-body {
+  font-size: 16px; line-height: 1.85; color: var(--texto);
+  border-left: 3px solid var(--dorado); padding-left: 24px;
+  margin-bottom: 32px; white-space: pre-wrap;
+}
+.diag-result-cta {
+  display: inline-flex; align-items:center; gap:10px;
+  background: var(--verde); color: var(--crema);
+  padding: 16px 32px; border-radius: 50px; text-decoration: none;
+  font-size: 13px; font-weight: 500; letter-spacing: 2px;
+  text-transform: uppercase; transition: all 0.3s;
+}
+.diag-result-cta:hover { background: var(--verde-mid); transform: translateY(-2px); }
+.diag-restart {
+  background: none; border: 1.5px solid var(--crema-dark);
+  color: var(--gris); padding: 14px 28px; border-radius: 50px;
+  font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer; margin-left: 16px; transition: all 0.3s; font-family: var(--font-body);
+}
+.diag-restart:hover { border-color: var(--verde); color: var(--verde); }
+.diag-ai-badge {
+  display: inline-flex; align-items:center; gap:8px;
+  background: rgba(26,68,40,0.06); border: 1px solid rgba(26,68,40,0.12);
+  color: var(--verde-mid); padding: 8px 18px; border-radius: 30px;
+  font-size: 12px; letter-spacing: 1px; margin-bottom: 40px;
+}
+.diag-ai-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--verde-claro); animation: blink 2s infinite; }
+
+/* ═══════════════════════════════════════
+   CTA FINAL
+═══════════════════════════════════════ */
+.cta-section {
+  background: var(--verde);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: 160px 60px;
+}
+.cta-section::before {
+  content:'';
+  position:absolute; top:50%; left:50%;
+  transform: translate(-50%,-50%);
+  width: 700px; height: 700px;
+  border: 1px solid rgba(201,169,110,0.12);
+  border-radius: 50%;
+  animation: cta-pulse 4s ease-in-out infinite;
+}
+.cta-section::after {
+  content:'';
+  position:absolute; top:50%; left:50%;
+  transform: translate(-50%,-50%);
+  width: 450px; height: 450px;
+  border: 1px solid rgba(201,169,110,0.2);
+  border-radius: 50%;
+  animation: cta-pulse 4s 1s ease-in-out infinite;
+}
+@keyframes cta-pulse {
+  0%,100%{ transform:translate(-50%,-50%) scale(1); opacity:1; }
+  50%{ transform:translate(-50%,-50%) scale(1.05); opacity:0.5; }
+}
+.cta-eyebrow { color: var(--dorado); font-size:11px; letter-spacing:5px; text-transform:uppercase; margin-bottom:24px; position:relative; z-index:1; }
+.cta-title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 6vw, 82px);
+  font-weight: 300;
+  color: var(--crema);
+  line-height: 1.1;
+  margin-bottom: 20px;
+  position: relative; z-index:1;
+}
+.cta-title em { font-style:italic; color: var(--dorado-claro); }
+.cta-sub { font-size:16px; color:rgba(247,243,237,0.65); margin-bottom:48px; position:relative; z-index:1; }
+.cta-btn {
+  display: inline-flex; align-items:center; gap:14px;
+  background: var(--dorado);
+  color: var(--verde);
+  padding: 20px 44px;
+  border-radius: 60px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  transition: all 0.4s;
+  position: relative; z-index:1;
+  box-shadow: 0 0 0 rgba(201,169,110,0.4);
+  animation: cta-glow 3s ease-in-out infinite;
+}
+.cta-btn:hover { background:var(--dorado-claro); transform:translateY(-4px); }
+@keyframes cta-glow {
+  0%,100%{ box-shadow: 0 0 0 0 rgba(201,169,110,0); }
+  50%{ box-shadow: 0 0 40px 12px rgba(201,169,110,0.3); }
+}
+.cupos-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  margin-top:24px;
+  background:rgba(255,255,255,0.08);
+  color:rgba(247,243,237,0.6);
+  padding:8px 20px;
+  border-radius:30px;
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  position:relative; z-index:1;
+}
+.cupos-dot { width:6px; height:6px; background:#4ade80; border-radius:50%; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+footer {
+  background: #0e2518;
+  color: rgba(247,243,237,0.4);
+  padding: 40px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+footer a { color: var(--dorado); text-decoration:none; }
+
+/* ═══════════════════════════════════════
+   SCROLL REVEAL BASE
+═══════════════════════════════════════ */
+.reveal {
+  opacity:0; transform:translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.show { opacity:1; transform:translateY(0); }
+.reveal-left { opacity:0; transform:translateX(-50px); transition: opacity 0.9s ease, transform 0.9s ease; }
+.reveal-left.show { opacity:1; transform:translateX(0); }
+.reveal-right { opacity:0; transform:translateX(50px); transition: opacity 0.9s ease, transform 0.9s ease; }
+.reveal-right.show { opacity:1; transform:translateX(0); }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media(max-width:1024px){
+  nav { padding:20px 30px; }
+  nav.scrolled { padding:14px 30px; }
+  .hero-content { grid-template-columns:1fr; gap:40px; padding:0 30px; text-align:center; }
+  .hero-photo { max-width:400px; margin:0 auto; }
+  .hero-p { margin:0 auto 40px; }
+  .hero-actions { justify-content:center; }
+  .section-wrap { padding:100px 30px; }
+  .sobre-grid { grid-template-columns:1fr; gap:50px; }
+  .sobre-img-tag { right:20px; }
+  .servicios-grid { grid-template-columns:1fr 1fr; }
+  .problemas-grid { grid-template-columns:repeat(2,1fr); }
+  .modalidades-grid { grid-template-columns:1fr; }
+  footer { flex-direction:column; gap:16px; text-align:center; }
+}
+@media(max-width:640px){
+  .nav-links { display:none; }
+  .hero h1 { font-size:42px; }
+  .servicios-grid { grid-template-columns:1fr; }
+  .problemas-grid { grid-template-columns:1fr 1fr; }
+  .stat-1,.stat-2 { display:none; }
+}
+
+/* ═══════════════════════════════════════
+   GRAIN TEXTURE OVERLAY
+═══════════════════════════════════════ */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 9990;
+  animation: grainShift 0.5s steps(2) infinite;
+}
+@keyframes grainShift {
+  0%  { transform: translate(0, 0); }
+  25% { transform: translate(-2px, 1px); }
+  50% { transform: translate(1px, -2px); }
+  75% { transform: translate(2px, 1px); }
+  100%{ transform: translate(-1px, 2px); }
+}
+
+/* ═══════════════════════════════════════
+   SOUND TOGGLE
+═══════════════════════════════════════ */
+#soundToggle {
+  position: fixed; bottom: 32px; right: 32px;
+  z-index: 2000;
+  width: 52px; height: 52px;
+  background: rgba(247,243,237,0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--crema-dark);
+  border-radius: 50%;
+  display: flex; align-items:center; justify-content:center;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(26,68,40,0.12);
+  transition: all 0.3s;
+  font-size: 20px;
+}
+#soundToggle:hover { transform: scale(1.1); box-shadow: 0 12px 40px rgba(26,68,40,0.18); }
+#soundToggle.playing { background: var(--verde); border-color: var(--verde); }
+#soundToggle.playing .sound-icon { filter: invert(1); }
+
+/* ═══════════════════════════════════════
+   PROGRESS BAR TOP
+═══════════════════════════════════════ */
+#readingProgress {
+  position: fixed; top: 0; left: 0;
+  height: 2px; width: 0%;
+  background: linear-gradient(to right, var(--verde-claro), var(--dorado));
+  z-index: 9995;
+  transition: width 0.1s linear;
+}
+
+/* ═══════════════════════════════════════
+   CONTADORES ANIMADOS
+═══════════════════════════════════════ */
+.stats-section {
+  background: var(--verde);
+  padding: 0;
+  overflow: hidden;
+}
+.stats-inner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1300px;
+  margin: 0 auto;
+}
+.stat-block {
+  padding: 70px 40px;
+  text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.4s;
+}
+.stat-block:last-child { border-right: none; }
+.stat-block:hover { background: rgba(255,255,255,0.04); }
+.stat-block::before {
+  content: '';
+  position: absolute; bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 2px;
+  background: var(--dorado);
+  transition: width 0.5s ease;
+}
+.stat-block:hover::before { width: 60%; }
+.stat-number {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 5vw, 72px);
+  font-weight: 300;
+  color: var(--crema);
+  line-height: 1;
+  display: flex; align-items: flex-start; justify-content: center; gap: 4px;
+}
+.stat-number sup { font-size: 0.4em; margin-top: 12px; color: var(--dorado); }
+.stat-label {
+  font-size: 12px; letter-spacing: 3px;
+  text-transform: uppercase; color: rgba(247,243,237,0.5);
+  margin-top: 12px;
+}
+
+/* ═══════════════════════════════════════
+   PROCESO — TIMELINE
+═══════════════════════════════════════ */
+.proceso-section { background: var(--crema); overflow: hidden; }
+.proceso-title-wrap { max-width: 1300px; margin: 0 auto; padding: 0 60px; }
+.proceso-timeline {
+  max-width: 1300px;
+  margin: 60px auto 0;
+  padding: 0 60px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+.proceso-timeline::before {
+  content: '';
+  position: absolute; top: 36px; left: 10%; right: 10%;
+  height: 1px; background: var(--crema-dark);
+  z-index: 0;
+}
+.proceso-step {
+  position: relative; z-index: 1;
+  text-align: center; padding: 0 20px;
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.proceso-step.show { opacity:1; transform: translateY(0); }
+.proceso-circle {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--blanco); border: 2px solid var(--crema-dark);
+  margin: 0 auto 24px;
+  display: flex; align-items:center; justify-content:center;
+  font-size: 28px;
+  transition: all 0.4s;
+  position: relative;
+}
+.proceso-step:hover .proceso-circle {
+  background: var(--verde); border-color: var(--verde);
+  transform: scale(1.15);
+  box-shadow: 0 16px 40px rgba(26,68,40,0.2);
+}
+.proceso-step:hover .proceso-circle .proceso-emoji { filter: none; }
+.proceso-step-num {
+  position: absolute; top: -8px; right: -8px;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--dorado); color: var(--verde);
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items:center; justify-content:center;
+}
+.proceso-step-title {
+  font-family: var(--font-display);
+  font-size: 22px; font-weight: 400;
+  color: var(--verde); margin-bottom: 12px;
+}
+.proceso-step-desc {
+  font-size: 14px; color: var(--gris);
+  line-height: 1.7;
+}
+
+/* ═══════════════════════════════════════
+   RIPPLE EN BOTONES
+═══════════════════════════════════════ */
+.ripple-btn { position: relative; overflow: hidden; }
+.ripple-btn .ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  transform: scale(0);
+  animation: ripple-anim 0.6s linear;
+  pointer-events: none;
+}
+@keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+
+/* ═══════════════════════════════════════
+   HOVER MAGNÉTICO EN NAV LINKS
+═══════════════════════════════════════ */
+.nav-links a { transition: transform 0.3s ease, color 0.3s; }
+
+/* ═══════════════════════════════════════
+   SECTION DIVIDERS ORGÁNICOS
+═══════════════════════════════════════ */
+.wave-divider {
+  width: 100%; overflow: hidden; line-height: 0;
+  margin-bottom: -2px;
+}
+.wave-divider svg { display: block; width: 100%; }
+
+/* ═══════════════════════════════════════
+   FLOATING WHATSAPP
+═══════════════════════════════════════ */
+#floatWa {
+  position: fixed; bottom: 32px; left: 32px;
+  z-index: 2000;
+  display: flex; align-items: center; gap: 12px;
+  background: #25d366;
+  color: white;
+  padding: 14px 22px 14px 18px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 13px; font-weight: 500;
+  box-shadow: 0 8px 32px rgba(37,211,102,0.35);
+  transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+  animation: wa-entrance 0.8s 3.5s both;
+}
+#floatWa:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 16px 48px rgba(37,211,102,0.45);
+  padding-right: 28px;
+}
+#floatWa .wa-label {
+  max-width: 0; overflow: hidden; white-space: nowrap;
+  transition: max-width 0.4s ease;
+}
+#floatWa:hover .wa-label { max-width: 160px; }
+@keyframes wa-entrance {
+  from { opacity:0; transform: translateX(-60px); }
+  to   { opacity:1; transform: translateX(0); }
+}
+.wa-pulse {
+  position: absolute; inset: 0; border-radius: 50px;
+  background: #25d366;
+  animation: wa-pulse 2.5s ease-out infinite;
+  z-index: -1;
+}
+@keyframes wa-pulse {
+  0%   { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════
+   PARALLAX HERO TEXT
+═══════════════════════════════════════ */
+.hero-parallax { will-change: transform; }
+
+/* ═══════════════════════════════════════
+   SECTION TRANSITION FADE EDGES
+═══════════════════════════════════════ */
+.fade-edge-top {
+  position: relative;
+}
+.fade-edge-top::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, var(--crema), transparent);
+  z-index: 2; pointer-events: none;
+}
+
+/* ═══════════════════════════════════════
+   MOBILE MENU
+═══════════════════════════════════════ */
+.hamburger {
+  display: none;
+  flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 8px;
+}
+.hamburger span {
+  display: block; width: 26px; height: 2px;
+  background: var(--crema); border-radius: 2px;
+  transition: all 0.3s;
+}
+nav.scrolled .hamburger span { background: var(--verde); }
+.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+.mobile-menu {
+  display: none;
+  position: fixed; inset: 0;
+  background: var(--verde);
+  z-index: 999;
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 40px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: var(--font-display);
+  font-size: 48px; font-weight: 300;
+  color: var(--crema); text-decoration: none;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.4s, transform 0.4s, color 0.3s;
+}
+.mobile-menu.open a { opacity:1; transform: translateY(0); }
+.mobile-menu.open a:nth-child(1){ transition-delay:0.1s; }
+.mobile-menu.open a:nth-child(2){ transition-delay:0.2s; }
+.mobile-menu.open a:nth-child(3){ transition-delay:0.3s; }
+.mobile-menu.open a:nth-child(4){ transition-delay:0.4s; }
+.mobile-menu.open a:nth-child(5){ transition-delay:0.5s; }
+.mobile-menu a:hover { color: var(--dorado); }
+
+@media(max-width:1024px){
+  .hamburger { display: flex; }
+  .nav-links  { display: none; }
+}
+
+@media(max-width:640px){
+  .stats-inner { grid-template-columns: 1fr 1fr; }
+  .proceso-timeline { grid-template-columns: 1fr 1fr; }
+  .proceso-timeline::before { display: none; }
+}
+
+
+.nav-ig {
+  color: var(--crema) !important;
+  display: flex; align-items: center;
+  transition: color 0.3s, transform 0.3s !important;
+  opacity: 0.85;
+}
+.nav-ig::after { display:none !important; }
+.nav-ig:hover { color: var(--dorado) !important; transform: scale(1.15) !important; opacity:1; }
+nav.scrolled .nav-ig { color: var(--verde) !important; }
+nav.scrolled .nav-ig:hover { color: var(--dorado) !important; }
+
+
+#floatSocial {
+  position: fixed; bottom: 32px; left: 32px;
+  z-index: 2000;
+  display: flex; flex-direction: column; gap: 12px;
+  animation: wa-entrance 0.8s 3.5s both;
+}
+#floatIg, #floatWa {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 22px 14px 18px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 13px; font-weight: 500;
+  transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+  position: relative;
+}
+#floatIg {
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  color: white;
+  box-shadow: 0 8px 32px rgba(131,58,180,0.35);
+}
+#floatIg:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 16px 48px rgba(131,58,180,0.45);
+  padding-right: 28px;
+}
+#floatWa {
+  background: #25d366;
+  color: white;
+  box-shadow: 0 8px 32px rgba(37,211,102,0.35);
+}
+#floatWa:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 16px 48px rgba(37,211,102,0.45);
+  padding-right: 28px;
+}
+.float-label {
+  max-width: 0; overflow: hidden; white-space: nowrap;
+  transition: max-width 0.4s ease;
+}
+#floatIg:hover .float-label,
+#floatWa:hover .float-label { max-width: 180px; }
+
+
+/* ─── INSTAGRAM SECTION ─── */
+.ig-handle-badge {
+  display: inline-flex; text-decoration: none;
+  margin-bottom: 60px;
+}
+.ig-handle-inner {
+  display: flex; align-items: center; gap: 20px;
+  background: white;
+  border: 1px solid var(--crema-dark);
+  border-radius: 80px;
+  padding: 14px 28px 14px 14px;
+  box-shadow: 0 8px 40px rgba(26,68,40,0.08);
+  transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+.ig-handle-badge:hover .ig-handle-inner {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(131,58,180,0.15);
+  border-color: transparent;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045) border-box;
+  border: 2px solid transparent;
+}
+.ig-avatar-ring {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  flex-shrink: 0;
+}
+.ig-avatar-img {
+  width: 100%; height: 100%;
+  border-radius: 50%; object-fit: cover;
+  border: 2px solid white;
+  display: block;
+}
+.ig-handle-name {
+  font-weight: 600; font-size: 17px; color: var(--texto);
+  font-family: var(--font-display);
+}
+.ig-handle-sub { font-size: 13px; color: var(--gris); margin-top: 2px; }
+.ig-handle-icon {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  display: flex; align-items:center; justify-content:center;
+  flex-shrink: 0;
+}
+
+/* Grid de fotos */
+.ig-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 200px 200px;
+  gap: 12px;
+  margin-bottom: 48px;
+  border-radius: 24px;
+  overflow: hidden;
+}
+.ig-card {
+  position: relative; overflow: hidden;
+  display: block; text-decoration: none;
+}
+.ig-card-tall { grid-row: span 2; }
+.ig-card img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22,1,0.36,1), filter 0.4s;
+  filter: saturate(0.85);
+}
+.ig-card:hover img { transform: scale(1.08); filter: saturate(1.1); }
+.ig-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(131,58,180,0.7), rgba(253,29,29,0.5));
+  display: flex; align-items:center; justify-content:center;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.ig-card:hover .ig-card-overlay { opacity: 1; }
+
+.ig-cta-btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+  color: white;
+  padding: 18px 40px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 14px; font-weight: 500;
+  letter-spacing: 1px;
+  transition: all 0.4s;
+  box-shadow: 0 8px 32px rgba(131,58,180,0.3);
+}
+.ig-cta-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(131,58,180,0.4);
+}
+
+@media(max-width:768px){
+  .ig-grid { grid-template-columns: repeat(3,1fr); grid-template-rows: auto; }
+  .ig-card-tall { grid-row: span 1; }
+  .ig-handle-inner { flex-wrap: wrap; border-radius: 24px; text-align:left; }
+}
+
+
+/* ═══════════════════════════════════════
+   SECCIONES DE VALOR
+═══════════════════════════════════════ */
+
+/* ── 1. NUTRICIÓN PERSONALIZADA — Split cinematic ── */
+.val-personalizada {
+  background: var(--crema);
+  overflow: hidden;
+}
+.val-split {
+  max-width: 1300px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 600px;
+}
+.val-split-img {
+  position: relative; overflow: hidden;
+}
+.val-split-img img {
+  width:100%; height:100%; object-fit:cover;
+  transition: transform 8s ease;
+}
+.val-split-img:hover img { transform: scale(1.06); }
+.val-split-img-overlay {
+  position:absolute; inset:0;
+  background: linear-gradient(135deg, rgba(26,68,40,0.3), transparent);
+}
+.val-split-body {
+  padding: 80px 70px;
+  display: flex; flex-direction:column; justify-content:center;
+  background: var(--blanco);
+}
+.val-number {
+  font-family: var(--font-display);
+  font-size: 120px; font-weight: 300;
+  color: var(--crema-dark); line-height:1;
+  margin-bottom: -20px; position:relative; z-index:0;
+}
+.val-content { position:relative; z-index:1; }
+.val-eyebrow {
+  font-size:11px; letter-spacing:5px; text-transform:uppercase;
+  color:var(--dorado); margin-bottom:16px;
+  display:flex; align-items:center; gap:12px;
+}
+.val-eyebrow::before { content:''; width:24px; height:1px; background:var(--dorado); }
+.val-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 3.5vw, 50px); font-weight:300;
+  color: var(--verde); line-height:1.15; margin-bottom:24px;
+}
+.val-title em { font-style:italic; color:var(--verde-claro); }
+.val-body {
+  font-size:17px; line-height:1.85; color:#555;
+  margin-bottom:32px; max-width:460px;
+}
+.val-pills {
+  display:flex; flex-wrap:wrap; gap:10px; margin-bottom:36px;
+}
+.val-pill {
+  background:var(--crema); border:1px solid var(--crema-dark);
+  color:var(--verde-mid); padding:8px 18px; border-radius:30px;
+  font-size:13px; font-weight:500;
+  transition: all 0.3s;
+}
+.val-pill:hover { background:var(--verde); color:white; border-color:var(--verde); transform:translateY(-2px); }
+.val-link {
+  display:inline-flex; align-items:center; gap:10px;
+  color:var(--verde); font-size:14px; font-weight:500;
+  letter-spacing:1px; text-decoration:none;
+  transition: gap 0.3s, color 0.3s;
+}
+.val-link:hover { gap:16px; color:var(--dorado); }
+
+/* ── 2. PÉRDIDA DE PESO — Dark dramatic ── */
+.val-peso {
+  background: var(--verde);
+  position:relative; overflow:hidden;
+  padding: 120px 60px;
+}
+.val-peso::before {
+  content:'';
+  position:absolute; inset:0;
+  background: url('sobrepeso.jpeg') center/cover;
+  opacity:0.08;
+}
+.val-peso-inner {
+  max-width:1300px; margin:0 auto;
+  position:relative; z-index:1;
+  display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;
+}
+.val-peso .val-title { color:var(--crema); }
+.val-peso .val-body { color:rgba(247,243,237,0.7); max-width:100%; }
+.val-peso .val-eyebrow { color:var(--dorado); }
+.val-peso .val-eyebrow::before { background:var(--dorado); }
+.val-peso .val-number { color:rgba(255,255,255,0.05); }
+
+/* Barra de progreso peso */
+.peso-bars { display:flex; flex-direction:column; gap:20px; }
+.peso-bar-item {}
+.peso-bar-label {
+  display:flex; justify-content:space-between;
+  font-size:13px; color:rgba(247,243,237,0.7);
+  margin-bottom:8px; letter-spacing:1px; text-transform:uppercase;
+}
+.peso-bar-track {
+  height:6px; background:rgba(255,255,255,0.1); border-radius:10px; overflow:hidden;
+}
+.peso-bar-fill {
+  height:100%; border-radius:10px;
+  background:linear-gradient(to right, var(--verde-claro), var(--dorado));
+  width:0; transition:width 1.5s cubic-bezier(0.22,1,0.36,1);
+}
+.peso-bar-fill.animated { width: var(--target-w); }
+
+/* ── 3. NUTRICIÓN DEPORTIVA — Energy cards ── */
+.val-deportiva {
+  background: var(--crema-dark);
+  padding: 120px 60px;
+}
+.val-deportiva-inner { max-width:1300px; margin:0 auto; }
+.deporte-cards {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:60px;
+}
+.deporte-card {
+  background:var(--blanco); border-radius:24px; padding:36px 30px;
+  border:1px solid transparent;
+  transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+  opacity:0; transform:translateY(30px);
+}
+.deporte-card.show { opacity:1; transform:translateY(0); }
+.deporte-card:hover {
+  border-color:var(--dorado);
+  box-shadow:0 24px 60px rgba(26,68,40,0.1);
+  transform:translateY(-6px);
+}
+.deporte-icon {
+  width:64px; height:64px; border-radius:20px;
+  background:var(--verde); display:flex; align-items:center; justify-content:center;
+  font-size:28px; margin-bottom:24px;
+  transition: transform 0.4s;
+}
+.deporte-card:hover .deporte-icon { transform:scale(1.1) rotate(5deg); }
+.deporte-card-title {
+  font-family:var(--font-display); font-size:24px; font-weight:400;
+  color:var(--verde); margin-bottom:12px;
+}
+.deporte-card-body { font-size:15px; line-height:1.75; color:var(--gris); }
+.deporte-card-stat {
+  margin-top:20px; padding-top:20px; border-top:1px solid var(--crema-dark);
+  font-family:var(--font-display); font-size:32px; font-weight:300;
+  color:var(--dorado);
+}
+.deporte-card-stat span { font-size:13px; font-family:var(--font-body); color:var(--gris); display:block; margin-top:2px; }
+
+/* ── 4. HÁBITOS SOSTENIBLES — Timeline horizontal ── */
+.val-habitos {
+  background:var(--blanco); padding:120px 60px; overflow:hidden;
+}
+.val-habitos-inner { max-width:1300px; margin:0 auto; }
+.habitos-journey {
+  margin-top:70px; position:relative;
+  display:grid; grid-template-columns:repeat(5,1fr); gap:0;
+}
+.habitos-journey::before {
+  content:''; position:absolute; top:36px; left:5%; right:5%;
+  height:2px;
+  background:linear-gradient(to right, var(--verde), var(--dorado), var(--verde-claro));
+}
+.habito-step {
+  text-align:center; padding:0 16px; position:relative; z-index:1;
+  opacity:0; transform:translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.habito-step.show { opacity:1; transform:translateY(0); }
+.habito-dot {
+  width:72px; height:72px; border-radius:50%;
+  background:var(--blanco); border:2px solid var(--crema-dark);
+  margin:0 auto 20px; display:flex; align-items:center; justify-content:center;
+  font-size:30px; transition:all 0.4s;
+  box-shadow: 0 4px 20px rgba(26,68,40,0.06);
+}
+.habito-step:hover .habito-dot {
+  background:var(--verde); border-color:var(--verde);
+  transform:scale(1.2);
+  box-shadow:0 12px 30px rgba(26,68,40,0.2);
+}
+.habito-week {
+  font-size:11px; letter-spacing:3px; text-transform:uppercase;
+  color:var(--dorado); margin-bottom:8px;
+}
+.habito-title {
+  font-family:var(--font-display); font-size:18px; font-weight:400; color:var(--verde);
+}
+.habito-desc { font-size:13px; color:var(--gris); line-height:1.6; margin-top:6px; }
+
+/* ── 5. CONSULTA VIRTUAL — Feature showcase ── */
+.val-virtual {
+  background:var(--verde); padding:120px 60px; overflow:hidden; position:relative;
+}
+.val-virtual::after {
+  content:''; position:absolute; top:-200px; right:-200px;
+  width:600px; height:600px; border-radius:50%;
+  border:1px solid rgba(201,169,110,0.1);
+}
+.val-virtual-inner {
+  max-width:1300px; margin:0 auto; position:relative; z-index:1;
+  display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;
+}
+.val-virtual .val-title { color:var(--crema); }
+.val-virtual .val-body { color:rgba(247,243,237,0.7); max-width:100%; }
+.val-virtual .val-eyebrow { color:var(--dorado); }
+.val-virtual .val-eyebrow::before { background:var(--dorado); }
+
+/* Mock pantalla virtual */
+.virtual-mockup {
+  position:relative;
+}
+.virtual-screen {
+  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+  border-radius:28px; padding:32px; backdrop-filter:blur(10px);
+  box-shadow:0 40px 80px rgba(0,0,0,0.3);
+}
+.virtual-topbar {
+  display:flex; align-items:center; gap:10px; margin-bottom:24px;
+}
+.virtual-dot { width:10px; height:10px; border-radius:50%; }
+.virtual-feature-list { display:flex; flex-direction:column; gap:16px; }
+.virtual-feature {
+  display:flex; align-items:center; gap:16px;
+  background:rgba(255,255,255,0.06); border-radius:16px; padding:16px 20px;
+  border:1px solid rgba(255,255,255,0.08);
+  opacity:0; transform:translateX(30px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.virtual-feature.show { opacity:1; transform:translateX(0); }
+.virtual-feature-icon {
+  width:44px; height:44px; border-radius:12px;
+  background:rgba(201,169,110,0.15); display:flex; align-items:center;
+  justify-content:center; font-size:20px; flex-shrink:0;
+}
+.virtual-feature-text { font-size:14px; color:rgba(247,243,237,0.85); line-height:1.5; }
+.virtual-feature-text strong { color:var(--dorado); display:block; margin-bottom:2px; }
+
+/* ── 6. RESULTADOS REALES — Social proof wall ── */
+.val-resultados {
+  background:var(--crema-dark); padding:120px 60px;
+}
+.val-resultados-inner { max-width:1300px; margin:0 auto; }
+.testimonios-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:24px; margin-top:60px;
+}
+.testimonio-card {
+  background:var(--blanco); border-radius:24px; padding:36px;
+  border:1px solid transparent;
+  opacity:0; transform:translateY(24px);
+  transition: all 0.6s ease;
+  position:relative; overflow:hidden;
+}
+.testimonio-card.show { opacity:1; transform:translateY(0); }
+.testimonio-card::before {
+  content:'"'; position:absolute; top:-10px; right:20px;
+  font-family:var(--font-display); font-size:120px; font-weight:300;
+  color:var(--crema-dark); line-height:1; z-index:0; pointer-events:none;
+}
+.testimonio-card:hover {
+  border-color:var(--dorado);
+  box-shadow:0 20px 60px rgba(26,68,40,0.1);
+  transform:translateY(-4px);
+}
+.testimonio-stars { color:var(--dorado); font-size:16px; margin-bottom:16px; }
+.testimonio-text {
+  font-size:15px; line-height:1.8; color:#555;
+  margin-bottom:24px; position:relative; z-index:1;
+  font-style:italic;
+}
+.testimonio-author { display:flex; align-items:center; gap:14px; }
+.testimonio-avatar {
+  width:46px; height:46px; border-radius:50%;
+  background:linear-gradient(135deg, var(--verde-claro), var(--dorado));
+  display:flex; align-items:center; justify-content:center;
+  color:white; font-weight:700; font-size:16px;
+  flex-shrink:0;
+}
+.testimonio-name { font-weight:600; color:var(--verde); font-size:15px; }
+.testimonio-meta { font-size:12px; color:var(--gris); margin-top:2px; }
+.testimonio-resultado {
+  margin-top:20px; padding:12px 16px; border-radius:12px;
+  background:linear-gradient(135deg, rgba(26,68,40,0.05), rgba(201,169,110,0.08));
+  border:1px solid rgba(26,68,40,0.08);
+  font-size:13px; font-weight:600; color:var(--verde-mid);
+  display:flex; align-items:center; gap:8px;
+}
+
+@media(max-width:1024px){
+  .val-split { grid-template-columns:1fr; }
+  .val-split-img { height:350px; }
+  .val-peso-inner, .val-virtual-inner { grid-template-columns:1fr; gap:50px; }
+  .deporte-cards { grid-template-columns:1fr 1fr; }
+  .habitos-journey { grid-template-columns:1fr 1fr; }
+  .habitos-journey::before { display:none; }
+  .testimonios-grid { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:640px){
+  .deporte-cards { grid-template-columns:1fr; }
+  .testimonios-grid { grid-template-columns:1fr; }
+  .habitos-journey { grid-template-columns:1fr; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+
+<!-- READING PROGRESS -->
+<div id="readingProgress"></div>
+
+<!-- FLOAT SOCIAL -->
+<div id="floatSocial">
+  <a href="https://www.instagram.com/nutripolethromero/" target="_blank" id="floatIg" title="Sígueme en Instagram">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    <span class="float-label">@nutripolethromero</span>
+  </a>
+  <a href="https://wa.me/96012216" id="floatWa" target="_blank" title="WhatsApp">
+    <div class="wa-pulse"></div>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.555 4.122 1.528 5.855L0 24l6.335-1.508A11.955 11.955 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.002-1.37l-.36-.214-3.726.886.938-3.617-.234-.373A9.818 9.818 0 1 1 12 21.818z"/></svg>
+    <span class="float-label">Agendar ahora</span>
+  </a>
+</div>
+
+<!-- SOUND TOGGLE -->
+<button id="soundToggle" title="Música ambiental">
+  <span class="sound-icon">🎵</span>
+</button>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#sobre" onclick="closeMobile()">Sobre mí</a>
+  <a href="#servicios" onclick="closeMobile()">Servicios</a>
+  <a href="#condiciones" onclick="closeMobile()">Condiciones</a>
+  <a href="#consulta" onclick="closeMobile()">Modalidades</a>
+  <a href="https://wa.me/96012216" onclick="closeMobile()">Agendar →</a>
+</div>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-text">Poleth Romero</div>
+  <div class="loader-sub">Nutricionista · Bienestar real</div>
+  <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <img src="logo.png" alt="Logo">
+    <div class="nav-brand">Poleth Romero <span>Nutricionista</span></div>
+  </a>
+  <button class="hamburger" id="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></button>
+  <div class="nav-links">
+    <a href="#sobre">Sobre mí</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#condiciones">Condiciones</a>
+    <a href="#consulta">Modalidades</a>
+    <a href="https://www.instagram.com/nutripolethromero/" target="_blank" class="nav-ig" title="Instagram">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    </a>
+    <a href="https://wa.me/96012216" class="nav-cta">Agendar →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="particles" id="particles"></div>
+  <div class="hero-line" style="left:20%; height:100%; top:0; opacity:0.1;"></div>
+  <div class="hero-line" style="right:30%; height:60%; top:20%; opacity:0.08;"></div>
+
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Nutricionista Certificada UNAH</div>
+      <h1 class="hero-h1">Transforma tu<br>alimentación,<br><em>transforma tu vida</em></h1>
+      <p class="hero-p">Planes personalizados y acompañamiento real para resultados sostenibles. Sin dietas extremas, con resultados que duran.</p>
+      <div class="hero-actions">
+        <a href="https://wa.me/96012216" class="btn-primary">
+          Agendar Consulta <span>→</span>
+        </a>
+        <a href="#sobre" class="btn-ghost">
+          Conocer más <span class="arrow">↓</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-photo">
+      <img src="poleth2.png" alt="Poleth Romero">
+      <div class="hero-photo-frame"></div>
+      <div class="hero-stat stat-1">
+        <div class="hero-stat-num">100%</div>
+        <div class="hero-stat-label">Planes personalizados</div>
+      </div>
+      <div class="hero-stat stat-2">
+        <div class="hero-stat-num">∞</div>
+        <div class="hero-stat-label">Acompañamiento continuo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-indicator-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-inner">
+    <div class="strip-item">Nutrición Personalizada</div>
+    <div class="strip-item">Pérdida de Peso</div>
+    <div class="strip-item">Nutrición Deportiva</div>
+    <div class="strip-item">Hábitos Sostenibles</div>
+    <div class="strip-item">Consulta Virtual</div>
+    <div class="strip-item">Resultados Reales</div>
+    <div class="strip-item">Nutrición Personalizada</div>
+    <div class="strip-item">Pérdida de Peso</div>
+    <div class="strip-item">Nutrición Deportiva</div>
+    <div class="strip-item">Hábitos Sostenibles</div>
+    <div class="strip-item">Consulta Virtual</div>
+    <div class="strip-item">Resultados Reales</div>
+  </div>
+</div>
+
+
+<!-- STATS -->
+<section class="stats-section">
+  <div class="stats-inner">
+    <div class="stat-block">
+      <div class="stat-number"><span class="counter" data-target="500">0</span><sup>+</sup></div>
+      <div class="stat-label">Pacientes transformados</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-number"><span class="counter" data-target="98">0</span><sup>%</sup></div>
+      <div class="stat-label">Tasa de satisfacción</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-number"><span class="counter" data-target="5">0</span><sup>★</sup></div>
+      <div class="stat-label">Valoración promedio</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-number"><span class="counter" data-target="3">0</span><sup>+</sup></div>
+      <div class="stat-label">Años de experiencia</div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE MÍ -->
+<section class="sobre-section" id="sobre">
+  <div class="section-wrap">
+    <div class="sobre-grid">
+
+      <div class="sobre-img-wrap" id="sobreImgWrap">
+        <img src="poleth.png" alt="Poleth Romero">
+        <div class="sobre-img-deco"></div>
+        <div class="sobre-img-tag">
+          <div class="sobre-img-tag-num">★ 5.0</div>
+          <div class="sobre-img-tag-text">Valoración pacientes</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-eyebrow reveal">Mi historia</div>
+        <h2 class="section-title reveal">Sobre <em>mí</em></h2>
+        <div class="chat-bubbles" id="chatBubbles"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- PROCESO -->
+<section class="proceso-section">
+  <div class="section-wrap proceso-title-wrap" style="padding-bottom:0;">
+    <div class="section-eyebrow reveal" style="justify-content:center; text-align:center;">Cómo trabajo</div>
+    <h2 class="section-title reveal" style="text-align:center;">Tu camino hacia<br><em>el bienestar</em></h2>
+  </div>
+  <div class="proceso-timeline">
+
+    <div class="proceso-step">
+      <div class="proceso-circle">
+        <span class="proceso-emoji">📋</span>
+        <div class="proceso-step-num">1</div>
+      </div>
+      <div class="proceso-step-title">Evaluación</div>
+      <div class="proceso-step-desc">Análisis completo de tu estado de salud, hábitos y objetivos personales.</div>
+    </div>
+
+    <div class="proceso-step" style="transition-delay:0.15s">
+      <div class="proceso-circle">
+        <span class="proceso-emoji">🎯</span>
+        <div class="proceso-step-num">2</div>
+      </div>
+      <div class="proceso-step-title">Plan Personalizado</div>
+      <div class="proceso-step-desc">Diseño de tu plan nutricional a medida, adaptado a tu vida real.</div>
+    </div>
+
+    <div class="proceso-step" style="transition-delay:0.3s">
+      <div class="proceso-circle">
+        <span class="proceso-emoji">🚀</span>
+        <div class="proceso-step-num">3</div>
+      </div>
+      <div class="proceso-step-title">Implementación</div>
+      <div class="proceso-step-desc">Acompañamiento activo mientras construyes nuevos hábitos sostenibles.</div>
+    </div>
+
+    <div class="proceso-step" style="transition-delay:0.45s">
+      <div class="proceso-circle">
+        <span class="proceso-emoji">✨</span>
+        <div class="proceso-step-num">4</div>
+      </div>
+      <div class="proceso-step-title">Resultados Duraderos</div>
+      <div class="proceso-step-desc">Ajustes continuos para que los cambios se queden contigo para siempre.</div>
+    </div>
+
+  </div>
+  <div style="height: 100px;"></div>
+</section>
+
+<!-- SERVICIOS -->
+<section class="servicios-section" id="servicios">
+  <div class="section-wrap">
+    <div class="section-eyebrow reveal">En que te asesoro</div>
+    <h2 class="section-title reveal">Mis <em>Servicios</em></h2>
+    <div class="servicios-grid">
+
+      <div class="servicio-card reveal">
+        <img src="1.png" alt="Hábitos Alimenticios">
+        <div class="servicio-overlay">
+          <div class="servicio-num">01</div>
+          <div class="servicio-title">Hábitos Alimenticios</div>
+          <div class="servicio-desc">Construcción de rutinas alimenticias saludables y sostenibles adaptadas a tu estilo de vida.</div>
+        </div>
+      </div>
+
+      <div class="servicio-card reveal" style="transition-delay:0.1s">
+        <img src="2.jpg" alt="Pérdida de Peso">
+        <div class="servicio-overlay">
+          <div class="servicio-num">02</div>
+          <div class="servicio-title">Pérdida de Peso</div>
+          <div class="servicio-desc">Estrategias nutricionales efectivas para alcanzar y mantener tu peso ideal de forma saludable.</div>
+        </div>
+      </div>
+
+      <div class="servicio-card reveal" style="transition-delay:0.2s">
+        <img src="3.jpg" alt="Nutrición Deportiva">
+        <div class="servicio-overlay">
+          <div class="servicio-num">03</div>
+          <div class="servicio-title">Nutrición Deportiva</div>
+          <div class="servicio-desc">Optimiza tu rendimiento físico con planes nutricionales diseñados para atletas y deportistas.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial-section">
+  <div class="testimonial-quote reveal">
+    La alimentación no es solo lo que comes — es cómo te relacionas con tu cuerpo, tu energía y tu vida.
+  </div>
+  <div class="testimonial-author reveal" style="transition-delay:0.2s">— Poleth Romero · Nutricionista</div>
+</section>
+
+<!-- PROBLEMAS -->
+<section class="problemas-section" id="condiciones">
+  <div class="section-wrap">
+    <div class="section-eyebrow">Áreas de atención</div>
+    <h2 class="section-title">Condiciones que <em>atiendo</em></h2>
+    <div class="problemas-grid">
+
+      <div class="problema-card">
+        <img src="sobrepeso.jpeg" alt="Sobrepeso">
+        <div class="problema-overlay">
+          <div class="problema-title">Sobrepeso y Obesidad</div>
+          <div class="problema-desc">Control de peso con hábitos alimenticios equilibrados y sostenibles.</div>
+        </div>
+      </div>
+
+      <div class="problema-card">
+        <img src="anemia.png" alt="Anemia">
+        <div class="problema-overlay">
+          <div class="problema-title">Anemia</div>
+          <div class="problema-desc">Recuperación de niveles de hierro mediante ajuste dietético.</div>
+        </div>
+      </div>
+
+      <div class="problema-card">
+        <img src="bajo peso.png" alt="Bajo Peso">
+        <div class="problema-overlay">
+          <div class="problema-title">Bajo Peso</div>
+          <div class="problema-desc">Nutrición para alcanzar peso saludable y energía óptima.</div>
+        </div>
+      </div>
+
+      <div class="problema-card">
+        <img src="colesterol.png" alt="Colesterol">
+        <div class="problema-overlay">
+          <div class="problema-title">Colesterol Alto</div>
+          <div class="problema-desc">Reducción de riesgo cardiovascular con alimentación dirigida.</div>
+        </div>
+      </div>
+
+      <div class="problema-card">
+        <img src="cealica.png" alt="Celíaca">
+        <div class="problema-overlay">
+          <div class="problema-title">Enf. Celíaca</div>
+          <div class="problema-desc">Dieta libre de gluten personalizada y nutricionalmente completa.</div>
+        </div>
+      </div>
+
+      <div class="problema-card">
+        <img src="gastritis.png" alt="Gastritis">
+        <div class="problema-overlay">
+          <div class="problema-title">Gastritis</div>
+          <div class="problema-desc">Manejo del dolor gástrico con alimentación anti-inflamatoria.</div>
+        </div>
+      </div>
+
+      <div class="problema-card">
+        <img src="diabetes.jpeg" alt="Diabetes">
+        <div class="problema-overlay">
+          <div class="problema-title">Diabetes</div>
+          <div class="problema-desc">Control glucémico mediante estrategias nutricionales probadas.</div>
+        </div>
+      </div>
+
+      <div class="problema-card">
+        <img src="alergia alimentaria.jpg" alt="Alergias">
+        <div class="problema-overlay">
+          <div class="problema-title">Alergias Alimentarias</div>
+          <div class="problema-desc">Dietas seguras y completas sin los alérgenos que te afectan.</div>
+        </div>
+      </div>
+
+      <div class="problema-card">
+        <img src="impertención.png" alt="Hipertensión">
+        <div class="problema-overlay">
+          <div class="problema-title">Hipertensión</div>
+          <div class="problema-desc">Reducción de presión arterial con plan alimenticio específico.</div>
+        </div>
+      </div>
+
+      <div class="problema-card">
+        <img src="rendimiento.png" alt="Rendimiento Deportivo">
+        <div class="problema-overlay">
+          <div class="problema-title">Rendimiento Deportivo</div>
+          <div class="problema-desc">Estrategia nutricional para maximizar tu potencial atlético.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MODALIDADES -->
+<section class="modalidades-section" id="consulta">
+  <div class="section-wrap">
+    <div class="section-eyebrow reveal">Cómo trabajamos</div>
+    <h2 class="section-title reveal">Modalidades de <em>Consulta</em></h2>
+    <div class="modalidades-grid">
+
+      <div class="modalidad-card">
+        <img class="modalidad-img" src="consultapresencial.jpg" alt="Presencial">
+        <div class="modalidad-body">
+          <div class="modalidad-icon">🏥</div>
+          <div class="modalidad-title">Consulta Presencial</div>
+          <div class="modalidad-desc">Atención personalizada cara a cara donde realizamos evaluación completa, medidas antropométricas y diseño de tu plan nutricional.</div>
+          <span class="modalidad-tag">En consultorio</span>
+        </div>
+      </div>
+
+      <div class="modalidad-card" style="transition-delay:0.1s">
+        <img class="modalidad-img" src="consultanutricionalonline.jpg" alt="Virtual">
+        <div class="modalidad-body">
+          <div class="modalidad-icon">💻</div>
+          <div class="modalidad-title">Consulta Virtual</div>
+          <div class="modalidad-desc">Recibe atención de calidad desde la comodidad de tu hogar. Mismos resultados, máxima comodidad y flexibilidad de horario.</div>
+          <span class="modalidad-tag">Desde casa</span>
+        </div>
+      </div>
+
+      <div class="modalidad-card" style="transition-delay:0.2s">
+        <img class="modalidad-img" src="seguimiento.jpg" alt="Seguimiento">
+        <div class="modalidad-body">
+          <div class="modalidad-icon">📊</div>
+          <div class="modalidad-title">Seguimiento Personalizado</div>
+          <div class="modalidad-desc">Monitoreo continuo de tu progreso con ajustes al plan según tus avances y objetivos para garantizar resultados sostenibles.</div>
+          <span class="modalidad-tag">Continuo</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- DIAGNOSTICO IA -->
+<section class="diagnostico-section" id="diagnostico">
+  <div class="section-wrap">
+    <div class="diag-wrap">
+
+      <div style="text-align:center; margin-bottom:16px;">
+        <div class="diag-ai-badge reveal">
+          <div class="diag-ai-dot"></div>
+          Atención Exclusiva
+        </div>
+      </div>
+
+      <div class="section-eyebrow reveal" style="justify-content:center;">Herramienta Exclusiva</div>
+      <h2 class="section-title reveal" style="text-align:center;">Tu diagnóstico<br><em>preeliminar para desarrollar tu cita</em></h2>
+      <p class="reveal" style="text-align:center; color:var(--gris); font-size:16px; margin-bottom:52px; max-width:520px; margin-left:auto; margin-right:auto; line-height:1.7;">
+        Responde 5 preguntas para un analisis de tu perfil nutricional. Recibirás un diagnóstico personalizado y sabrás exactamente qué necesitas.
+      </p>
+
+      <!-- Barra de pasos -->
+      <div class="diag-steps-bar" id="diagStepsBar">
+        <div class="diag-step-dot active" id="dot-1">1</div>
+        <div class="diag-step-line" id="line-1"></div>
+        <div class="diag-step-dot" id="dot-2">2</div>
+        <div class="diag-step-line" id="line-2"></div>
+        <div class="diag-step-dot" id="dot-3">3</div>
+        <div class="diag-step-line" id="line-3"></div>
+        <div class="diag-step-dot" id="dot-4">4</div>
+        <div class="diag-step-line" id="line-4"></div>
+        <div class="diag-step-dot" id="dot-5">5</div>
+      </div>
+
+      <!-- Tarjeta de pregunta -->
+      <div class="diag-card" id="diagCard">
+        <div id="diagQuestionWrap">
+          <div class="diag-question-num" id="diagNum">Pregunta 1 de 5</div>
+          <div class="diag-question-text" id="diagQuestion"></div>
+          <div class="diag-options" id="diagOptions"></div>
+        </div>
+
+        <!-- Loader -->
+        <div class="diag-loading" id="diagLoading">
+          <div class="diag-loading-orb"></div>
+          <div class="diag-loading-text">Analizando tu perfil...</div>
+          <div class="diag-loading-sub">La IA está preparando tu diagnóstico</div>
+        </div>
+
+        <!-- Resultado -->
+        <div class="diag-result" id="diagResult">
+          <div class="diag-result-header">
+            <div class="diag-result-avatar">✦</div>
+            <div class="diag-result-from">
+              Diagnóstico de Poleth Romero IA
+              <span>Análisis nutricional personalizado</span>
+            </div>
+          </div>
+          <div class="diag-result-body" id="diagResultText"></div>
+          <div>
+            <a href="https://wa.me/96012216" id="diagWaBtn" class="diag-result-cta" target="_blank">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.555 4.122 1.528 5.855L0 24l6.335-1.508A11.955 11.955 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.002-1.37l-.36-.214-3.726.886.938-3.617-.234-.373A9.818 9.818 0 1 1 12 21.818z"/></svg>
+              Agendar mi consulta ahora
+            </a>
+            <button class="diag-restart" id="diagRestart">Volver a empezar</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-eyebrow">Da el primer paso</div>
+  <h2 class="cta-title">¿List@ para comenzar<br>tu <em>transformación</em>?</h2>
+  <p class="cta-sub">Cupos limitados por semana · Atención personalizada garantizada</p>
+  <br>
+  <a href="https://wa.me/96012216" class="cta-btn">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.555 4.122 1.528 5.855L0 24l6.335-1.508A11.955 11.955 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.002-1.37l-.36-.214-3.726.886.938-3.617-.234-.373A9.818 9.818 0 1 1 12 21.818z"/></svg>
+    Agendar Consulta por WhatsApp
+  </a>
+  <br><br>
+  <div class="cupos-badge">
+    <div class="cupos-dot"></div>
+    Agenda disponible esta semana
+  </div>
+</section>
+
+
+
+<!-- ══════════════════════════════════════════
+     SECCIONES DE VALOR — 6 TEMAS DEL STRIP
+══════════════════════════════════════════ -->
+
+<!-- 1. NUTRICIÓN PERSONALIZADA -->
+<section class="val-personalizada" id="val-personalizada">
+  <div class="val-split">
+    <div class="val-split-img reveal-left">
+      <img src="poleth3.png" alt="Nutrición Personalizada">
+      <div class="val-split-img-overlay"></div>
+    </div>
+    <div class="val-split-body">
+      <div class="val-number reveal">01</div>
+      <div class="val-content">
+        <div class="val-eyebrow reveal">Tu plan único</div>
+        <h2 class="val-title reveal">Nutrición <em>100% personalizada</em></h2>
+        <p class="val-body reveal">No existen dos cuerpos iguales. Tu plan nutricional se diseña desde cero según tu metabolismo, estilo de vida, preferencias y objetivos — no una plantilla genérica que encontrarías en internet.</p>
+        <div class="val-pills reveal">
+          <span class="val-pill">Análisis metabólico</span>
+          <span class="val-pill">Macros ajustados</span>
+          <span class="val-pill">Alimentos que amas</span>
+          <span class="val-pill">Sin restricciones extremas</span>
+          <span class="val-pill">Actualización mensual</span>
+        </div>
+        <a href="https://wa.me/96012216" class="val-link">Quiero mi plan personalizado →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. PÉRDIDA DE PESO -->
+<section class="val-peso" id="val-peso">
+  <div class="val-peso-inner">
+    <div>
+      <div class="val-number reveal">02</div>
+      <div class="val-eyebrow reveal">Sin rebote</div>
+      <h2 class="val-title reveal">Pérdida de peso <em>que se queda</em></h2>
+      <p class="val-body reveal">Olvidaste las dietas de moda que solo funcionan dos semanas. Mi método combina ajuste nutricional gradual con educación alimentaria real — para que tu cuerpo alcance y mantenga su peso ideal de por vida.</p>
+      <a href="https://wa.me/96012216" class="val-link" style="color:var(--dorado-claro);">Empezar mi transformación →</a>
+    </div>
+    <div>
+      <div class="peso-bars" id="pesoBars">
+        <div class="peso-bar-item">
+          <div class="peso-bar-label"><span>Tasa de éxito sostenido</span><span>94%</span></div>
+          <div class="peso-bar-track"><div class="peso-bar-fill" style="--target-w:94%"></div></div>
+        </div>
+        <div class="peso-bar-item">
+          <div class="peso-bar-label"><span>Pacientes sin rebote a 1 año</span><span>88%</span></div>
+          <div class="peso-bar-track"><div class="peso-bar-fill" style="--target-w:88%"></div></div>
+        </div>
+        <div class="peso-bar-item">
+          <div class="peso-bar-label"><span>Satisfacción con el proceso</span><span>98%</span></div>
+          <div class="peso-bar-track"><div class="peso-bar-fill" style="--target-w:98%"></div></div>
+        </div>
+        <div class="peso-bar-item">
+          <div class="peso-bar-label"><span>Mejora en niveles de energía</span><span>91%</span></div>
+          <div class="peso-bar-track"><div class="peso-bar-fill" style="--target-w:91%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. NUTRICIÓN DEPORTIVA -->
+<section class="val-deportiva" id="val-deportiva">
+  <div class="val-deportiva-inner">
+    <div class="val-eyebrow reveal" style="justify-content:center;">Rinde más</div>
+    <h2 class="val-title reveal" style="text-align:center;">Nutrición <em>deportiva</em></h2>
+    <p class="val-body reveal" style="text-align:center;margin:0 auto;max-width:600px;">La diferencia entre un buen atleta y uno excepcional suele ser lo que come. Diseño protocolos nutricionales adaptados a tu deporte, intensidad y objetivos de rendimiento.</p>
+    <div class="deporte-cards">
+      <div class="deporte-card">
+        <div class="deporte-icon">⚡</div>
+        <div class="deporte-card-title">Pre-Entreno</div>
+        <div class="deporte-card-body">Combustible óptimo para que llegues a cada sesión con energía máxima y enfoque mental total.</div>
+        <div class="deporte-card-stat">+23% <span>más energía reportada</span></div>
+      </div>
+      <div class="deporte-card" style="transition-delay:0.15s">
+        <div class="deporte-icon">🔄</div>
+        <div class="deporte-card-title">Recuperación</div>
+        <div class="deporte-card-body">Protocolos post-entreno para reducir el daño muscular y acelerar tu recuperación entre sesiones.</div>
+        <div class="deporte-card-stat">-40% <span>tiempo de recuperación</span></div>
+      </div>
+      <div class="deporte-card" style="transition-delay:0.3s">
+        <div class="deporte-icon">🏆</div>
+        <div class="deporte-card-title">Rendimiento Peak</div>
+        <div class="deporte-card-body">Periodización nutricional para que alcances tu mejor versión justo cuando más lo necesitas.</div>
+        <div class="deporte-card-stat">Top 5% <span>de rendimiento atlético</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. HÁBITOS SOSTENIBLES -->
+<section class="val-habitos" id="val-habitos">
+  <div class="val-habitos-inner">
+    <div class="val-eyebrow reveal" style="justify-content:center;">Para siempre</div>
+    <h2 class="val-title reveal" style="text-align:center;">Hábitos que duran <em>toda la vida</em></h2>
+    <p class="val-body reveal" style="text-align:center;margin:0 auto 0;max-width:600px;">Las dietas tienen fecha de vencimiento. Los hábitos no. Te guío en un proceso gradual de 5 semanas para construir una relación sana con la comida que no requiere fuerza de voluntad constante.</p>
+    <div class="habitos-journey">
+      <div class="habito-step">
+        <div class="habito-dot">🧠</div>
+        <div class="habito-week">Semana 1</div>
+        <div class="habito-title">Consciencia</div>
+        <div class="habito-desc">Entiendes qué, cuándo y por qué comes como comes hoy.</div>
+      </div>
+      <div class="habito-step" style="transition-delay:0.1s">
+        <div class="habito-dot">🌱</div>
+        <div class="habito-week">Semana 2</div>
+        <div class="habito-title">Fundamentos</div>
+        <div class="habito-desc">Introduces los primeros cambios pequeños pero de alto impacto.</div>
+      </div>
+      <div class="habito-step" style="transition-delay:0.2s">
+        <div class="habito-dot">🔄</div>
+        <div class="habito-week">Semana 3</div>
+        <div class="habito-title">Repetición</div>
+        <div class="habito-desc">Los nuevos hábitos se vuelven automáticos con práctica guiada.</div>
+      </div>
+      <div class="habito-step" style="transition-delay:0.3s">
+        <div class="habito-dot">💪</div>
+        <div class="habito-week">Semana 4</div>
+        <div class="habito-title">Consolidación</div>
+        <div class="habito-desc">Tu nueva rutina ya no requiere esfuerzo — es parte de ti.</div>
+      </div>
+      <div class="habito-step" style="transition-delay:0.4s">
+        <div class="habito-dot">✨</div>
+        <div class="habito-week">Semana 5+</div>
+        <div class="habito-title">Libertad</div>
+        <div class="habito-desc">Comes bien sin pensarlo. Los resultados llegan solos.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. CONSULTA VIRTUAL -->
+<section class="val-virtual" id="val-virtual">
+  <div class="val-virtual-inner">
+    <div>
+      <div class="val-number reveal">05</div>
+      <div class="val-eyebrow reveal">Desde donde estés</div>
+      <h2 class="val-title reveal">Consulta virtual <em>sin compromiso</em></h2>
+      <p class="val-body reveal">Tu transformación no debería depender de si puedes salir de casa. Atención de la misma calidad que en consultorio, con la comodidad y flexibilidad de conectarte desde donde te sientas mejor.</p>
+      <a href="https://wa.me/96012216" class="val-link" style="color:var(--dorado-claro);">Agendar consulta virtual →</a>
+    </div>
+    <div class="virtual-mockup">
+      <div class="virtual-screen">
+        <div class="virtual-topbar">
+          <div class="virtual-dot" style="background:#ff5f57"></div>
+          <div class="virtual-dot" style="background:#febc2e"></div>
+          <div class="virtual-dot" style="background:#28c840"></div>
+          <span style="margin-left:12px;font-size:13px;color:rgba(247,243,237,0.5);letter-spacing:1px;">Tu Consulta · En línea</span>
+        </div>
+        <div class="virtual-feature-list" id="virtualFeatures">
+          <div class="virtual-feature">
+            <div class="virtual-feature-icon">📱</div>
+            <div class="virtual-feature-text"><strong>Desde cualquier dispositivo</strong>Teléfono, tablet o computadora — sin instalaciones.</div>
+          </div>
+          <div class="virtual-feature" style="transition-delay:0.15s">
+            <div class="virtual-feature-icon">⏰</div>
+            <div class="virtual-feature-text"><strong>Horarios flexibles</strong>Mañana, tarde o noche — ajustado a tu agenda.</div>
+          </div>
+          <div class="virtual-feature" style="transition-delay:0.3s">
+            <div class="virtual-feature-icon">📊</div>
+            <div class="virtual-feature-text"><strong>Plan digital al instante</strong>Recibes tu plan nutricional el mismo día de la consulta.</div>
+          </div>
+          <div class="virtual-feature" style="transition-delay:0.45s">
+            <div class="virtual-feature-icon">💬</div>
+            <div class="virtual-feature-text"><strong>Seguimiento por WhatsApp</strong>Acceso directo a Poleth entre consultas para tus dudas.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. RESULTADOS REALES -->
+<section class="val-resultados" id="val-resultados">
+  <div class="val-resultados-inner">
+    <div class="val-eyebrow reveal" style="justify-content:center;">Historias reales</div>
+    <h2 class="val-title reveal" style="text-align:center;">Resultados <em>que hablan</em></h2>
+    <p class="val-body reveal" style="text-align:center;margin:0 auto;max-width:600px;">Las mejores palabras no son las mías — son las de quienes ya vivieron la transformación. Estas son historias reales de personas que decidieron apostar por ellas mismas.</p>
+    <div class="testimonios-grid">
+
+      <div class="testimonio-card">
+        <div class="testimonio-stars">★★★★★</div>
+        <div class="testimonio-text">La nutricionista Poleth cambió completamente mi forma de ver la comida. Por primera vez en años no siento culpa al comer, y bajé 12 kilos sin pasar hambre ni una sola vez.</div>
+        <div class="testimonio-author">
+          <div class="testimonio-avatar">AM</div>
+          <div>
+            <div class="testimonio-name">Andrea M.</div>
+            <div class="testimonio-meta">Consulta presencial · 6 meses</div>
+          </div>
+        </div>
+        <div class="testimonio-resultado">🎯 −12 kg sostenidos · Energía al máximo</div>
+      </div>
+
+      <div class="testimonio-card" style="transition-delay:0.1s">
+        <div class="testimonio-stars">★★★★★</div>
+        <div class="testimonio-text">Como atleta necesitaba un plan que entendiera mis entrenamientos. La nutricionista Poleth lo hizo perfecto — mi rendimiento mejoró notablemente y mi recuperación es mucho más rápida.</div>
+        <div class="testimonio-author">
+          <div class="testimonio-avatar">CR</div>
+          <div>
+            <div class="testimonio-name">Carlos R.</div>
+            <div class="testimonio-meta">Nutrición deportiva · 4 meses</div>
+          </div>
+        </div>
+        <div class="testimonio-resultado">⚡ +35% rendimiento · Recuperación express</div>
+      </div>
+
+      <div class="testimonio-card" style="transition-delay:0.2s">
+        <div class="testimonio-stars">★★★★★</div>
+        <div class="testimonio-text">Tenía diabetes tipo 2 y pensé que nunca podría comer bien. La nutricionista Poleth me demostró lo contrario con un plan delicioso que me ayudó a controlar mis niveles de glucosa.</div>
+        <div class="testimonio-author">
+          <div class="testimonio-avatar">LV</div>
+          <div>
+            <div class="testimonio-name">Laura V.</div>
+            <div class="testimonio-meta">Consulta virtual · 8 meses</div>
+          </div>
+        </div>
+        <div class="testimonio-resultado">🩸 Glucosa controlada · Bienestar total</div>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:52px;">
+      <a href="https://wa.me/96012216" class="btn-primary ripple-btn reveal" style="display:inline-flex;">
+        Quiero resultados como estos →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section style="background: var(--blanco); padding: 100px 60px; text-align:center; overflow:hidden;">
+  <div style="max-width:1300px; margin:0 auto;">
+    <div class="section-eyebrow reveal" style="justify-content:center;">Sígueme</div>
+    <h2 class="section-title reveal" style="text-align:center; margin-bottom:12px;">
+      Mi mundo en <em>Instagram</em>
+    </h2>
+    <p class="reveal" style="color:var(--gris); font-size:16px; margin-bottom:48px; transition-delay:0.1s;">
+      Consejos diarios, recetas saludables y motivación para tu transformación
+    </p>
+
+    <!-- Handle badge -->
+    <a href="https://www.instagram.com/nutripolethromero/" target="_blank"
+       class="reveal ig-handle-badge"
+       style="transition-delay:0.2s;">
+      <div class="ig-handle-inner">
+        <div class="ig-avatar-ring">
+          <img src="poleth3.png" alt="Poleth" class="ig-avatar-img">
+        </div>
+        <div class="ig-handle-text">
+          <div class="ig-handle-name">@nutripolethromero</div>
+          <div class="ig-handle-sub">Nutricionista · Ver perfil completo →</div>
+        </div>
+        <div class="ig-handle-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </div>
+      </div>
+    </a>
+
+    <!-- Preview cards — inspirational post mockups -->
+    <div class="ig-grid reveal" style="transition-delay:0.3s;">
+      <a href="https://www.instagram.com/nutripolethromero/" target="_blank" class="ig-card ig-card-tall">
+        <img src="1.png" alt="Post">
+        <div class="ig-card-overlay">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+      </a>
+      <a href="https://www.instagram.com/nutripolethromero/" target="_blank" class="ig-card">
+        <img src="sobrepeso.jpeg" alt="Post">
+        <div class="ig-card-overlay">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+      </a>
+      <a href="https://www.instagram.com/nutripolethromero/" target="_blank" class="ig-card">
+        <img src="3.jpg" alt="Post">
+        <div class="ig-card-overlay">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+      </a>
+      <a href="https://www.instagram.com/nutripolethromero/" target="_blank" class="ig-card">
+        <img src="2.jpg" alt="Post">
+        <div class="ig-card-overlay">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+      </a>
+      <a href="https://www.instagram.com/nutripolethromero/" target="_blank" class="ig-card ig-card-tall">
+        <img src="consultapresencial.jpg" alt="Post">
+        <div class="ig-card-overlay">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+      </a>
+    </div>
+
+    <a href="https://www.instagram.com/nutripolethromero/" target="_blank"
+       class="reveal ig-cta-btn ripple-btn" style="transition-delay:0.4s;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      Seguir en Instagram
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>© 2026 Poleth Romero · Nutricionista</div>
+  <div>La mejor atención <span style="color:var(--dorado)">en la industria </span> para tu bienestar</div>
+  <div style="display:flex;gap:24px;align-items:center;"><a href="https://wa.me/96012216">WhatsApp</a><a href="https://www.instagram.com/nutripolethromero/" target="_blank" style="background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Instagram</a></div>
+</footer>
+
+<script>
+/* ─── CURSOR ─── */
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e=>{ mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+(function animRing(){
+  rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+})();
+
+/* ─── LOADER ─── */
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{ document.getElementById('loader').classList.add('hidden'); }, 2200);
+});
+
+/* ─── NAV SCROLL ─── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled', scrollY>60);
+});
+
+/* ─── PARTÍCULAS ─── */
+const pContainer = document.getElementById('particles');
+for(let i=0;i<18;i++){
+  const p = document.createElement('div');
+  p.className='particle';
+  const size = Math.random()*4+2;
+  p.style.cssText=`
+    width:${size}px; height:${size}px;
+    left:${Math.random()*100}%;
+    animation-duration:${Math.random()*12+8}s;
+    animation-delay:${Math.random()*8}s;
+    opacity:0.4;
+  `;
+  pContainer.appendChild(p);
+}
+
+/* ─── SCROLL REVEAL ─── */
+const revealObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); });
+},{threshold:0.15});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.modalidad-card,.problema-card').forEach(el=>revealObs.observe(el));
+
+/* ─── SOBRE MÍ ANIMACIONES ─── */
+const mensajes=[
+  "Soy Poleth Romero, nutricionista enfocada en ayudarte a transformar tu salud con hábitos sostenibles y personalizados.",
+  "Mi objetivo es que logres resultados reales sin dietas extremas y construyas una relación equilibrada con la alimentación."
+];
+let yaAnimo=false;
+const sobreImgWrap=document.getElementById('sobreImgWrap');
+const chatBubbles=document.getElementById('chatBubbles');
+
+function typeText(el,text,speed=20){
+  return new Promise(res=>{
+    let i=0; el.textContent='';
+    const iv=setInterval(()=>{
+      el.textContent+=text[i++];
+      if(i>=text.length){clearInterval(iv);res();}
+    },speed);
+  });
+}
+async function showBubble(text,delay){
+  await new Promise(r=>setTimeout(r,delay));
+  const typing=document.createElement('div');
+  typing.className='bubble bubble-typing';
+  typing.innerHTML='<span></span><span></span><span></span>';
+  chatBubbles.appendChild(typing);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    typing.style.opacity='1'; typing.style.transform='translateY(0)';
+  }));
+  await new Promise(r=>setTimeout(r,Math.max(900,text.length*15)));
+  typing.remove();
+  const b=document.createElement('div'); b.className='bubble';
+  const s=document.createElement('span'); b.appendChild(s);
+  chatBubbles.appendChild(b);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    b.style.opacity='1'; b.style.transform='translateY(0)';
+  }));
+  await typeText(s,text,20);
+}
+async function animarSobre(){
+  if(yaAnimo)return; yaAnimo=true;
+  sobreImgWrap.classList.add('show');
+  await showBubble(mensajes[0],400);
+  await showBubble(mensajes[1],500);
+}
+new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) animarSobre(); });
+},{threshold:0.2}).observe(document.querySelector('.sobre-section'));
+
+/* ─── STAGGER PROBLEMA CARDS ─── */
+const probCards=document.querySelectorAll('.problema-card');
+const probObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const i=Array.from(probCards).indexOf(e.target);
+      setTimeout(()=>e.target.classList.add('show'), i*80);
+    }
+  });
+},{threshold:0.1});
+probCards.forEach(c=>probObs.observe(c));
+
+/* ─── DIAGNÓSTICO IA ─── */
+const preguntas = [
+  {
+    texto: "¿Cuál es tu principal objetivo de salud en este momento?",
+    opciones: [
+      { icon: "⚖️", label: "Perder peso de forma saludable" },
+      { icon: "💪", label: "Mejorar mi rendimiento deportivo" },
+      { icon: "🩺", label: "Controlar una condición médica" },
+      { icon: "⚡", label: "Tener más energía y vitalidad" }
+    ]
+  },
+  {
+    texto: "¿Cómo describirías tu relación actual con la alimentación?",
+    opciones: [
+      { icon: "🍔", label: "Como sin mucho orden ni horarios" },
+      { icon: "🥗", label: "Intento comer sano pero me cuesta" },
+      { icon: "😰", label: "Tengo ansiedad o culpa al comer" },
+      { icon: "🔄", label: "Hago dietas constantemente sin resultado" }
+    ]
+  },
+  {
+    texto: "¿Tienes alguna condición de salud diagnosticada?",
+    opciones: [
+      { icon: "🩸", label: "Diabetes o resistencia a insulina" },
+      { icon: "❤️", label: "Colesterol alto o hipertensión" },
+      { icon: "🌾", label: "Celiaquía, gastritis o alergias" },
+      { icon: "✅", label: "No, estoy en buen estado de salud" }
+    ]
+  },
+  {
+    texto: "¿Cuánto tiempo llevas buscando una solución nutricional?",
+    opciones: [
+      { icon: "🆕", label: "Es la primera vez que lo intento" },
+      { icon: "📅", label: "Hace algunos meses" },
+      { icon: "📆", label: "Más de un año" },
+      { icon: "😓", label: "Años, sin encontrar algo que funcione" }
+    ]
+  },
+  {
+    texto: "¿Qué tipo de acompañamiento prefieres?",
+    opciones: [
+      { icon: "🏥", label: "Presencial, cara a cara" },
+      { icon: "💻", label: "Virtual, desde casa" },
+      { icon: "📱", label: "Seguimiento continuo por mensajes" },
+      { icon: "🔀", label: "Combinación de todo lo anterior" }
+    ]
+  }
+];
+
+let respuestas = [];
+let preguntaActual = 0;
+
+function renderPregunta(idx) {
+  const p = preguntas[idx];
+  document.getElementById('diagNum').textContent = `Pregunta ${idx+1} de 5`;
+  document.getElementById('diagQuestion').textContent = p.texto;
+  const opts = document.getElementById('diagOptions');
+  opts.innerHTML = '';
+  p.opciones.forEach((op, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'diag-option';
+    btn.innerHTML = `<span class="diag-option-icon">${op.icon}</span>${op.label}`;
+    btn.onclick = () => elegirOpcion(i, btn, op.label);
+    opts.appendChild(btn);
+  });
+  // Actualizar barra de pasos
+  for(let s=1; s<=5; s++){
+    const dot = document.getElementById(`dot-${s}`);
+    const line = s < 5 ? document.getElementById(`line-${s}`) : null;
+    dot.classList.remove('active','done');
+    if(s < idx+1){ dot.classList.add('done'); dot.textContent='✓'; }
+    else if(s === idx+1){ dot.classList.add('active'); dot.textContent=s; }
+    else { dot.textContent=s; }
+    if(line){ line.classList.toggle('done', s <= idx); }
+  }
+}
+
+function elegirOpcion(i, btn, label) {
+  document.querySelectorAll('.diag-option').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  respuestas[preguntaActual] = label;
+  setTimeout(()=>{
+    preguntaActual++;
+    if(preguntaActual < 5){
+      // Animar salida y entrada
+      const card = document.getElementById('diagCard');
+      card.style.opacity='0'; card.style.transform='translateX(30px)';
+      setTimeout(()=>{
+        renderPregunta(preguntaActual);
+        card.style.transition='none';
+        card.style.transform='translateX(-30px)';
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{
+          card.style.transition='opacity 0.4s ease, transform 0.4s ease';
+          card.style.opacity='1'; card.style.transform='translateX(0)';
+        }));
+      },300);
+    } else {
+      lanzarIA();
+    }
+  }, 350);
+}
+
+async function lanzarIA() {
+  document.getElementById('diagQuestionWrap').style.display='none';
+  document.getElementById('diagLoading').classList.add('active');
+  document.getElementById('diagStepsBar').querySelectorAll('.diag-step-dot').forEach(d=>{
+    d.classList.remove('active'); d.classList.add('done'); d.textContent='✓';
+  });
+  document.getElementById('diagStepsBar').querySelectorAll('.diag-step-line').forEach(l=>l.classList.add('done'));
+
+  const prompt = `Eres la nutricionista Poleth Romero. Un visitante de tu página web acaba de responder un diagnóstico nutricional rápido. Basándote en sus respuestas, escríbele un análisis nutricional personalizado, cálido y profesional de máximo 4 párrafos cortos. Al final, recomiéndale específicamente qué servicio tuyo necesita (consulta presencial, virtual o seguimiento). Usa un tono cercano, motivador y experto. NO uses asteriscos ni markdown. Solo texto natural.
+
+Las respuestas del visitante fueron:
+1. Objetivo principal: ${respuestas[0]}
+2. Relación con la alimentación: ${respuestas[1]}
+3. Condición de salud: ${respuestas[2]}
+4. Tiempo buscando solución: ${respuestas[3]}
+5. Tipo de acompañamiento preferido: ${respuestas[4]}`;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const texto = data.content.map(b=>b.text||'').join('');
+    mostrarResultado(texto);
+  } catch(e) {
+    mostrarResultado("Gracias por completar el diagnóstico. Basándome en tus respuestas, puedo ver que tienes metas claras y estás lista para un cambio real. Te recomiendo agendar una consulta conmigo para que podamos diseñar juntas un plan completamente personalizado a tu situación. ¡Estoy aquí para acompañarte!");
+  }
+}
+
+function mostrarResultado(texto) {
+  document.getElementById('diagLoading').classList.remove('active');
+  const resultDiv = document.getElementById('diagResult');
+  const textDiv = document.getElementById('diagResultText');
+  resultDiv.classList.add('active');
+
+  // Escribir letra a letra
+  textDiv.textContent = '';
+  let i = 0;
+  const iv = setInterval(()=>{
+    textDiv.textContent += texto[i++];
+    if(i >= texto.length) clearInterval(iv);
+  }, 18);
+
+  // ── Construir mensaje automático para WhatsApp ──
+  const preguntas_labels = [
+    '🎯 Objetivo principal',
+    '🍽️ Relación con la alimentación',
+    '🩺 Condición de salud',
+    '📅 Tiempo buscando solución',
+    '📱 Tipo de consulta preferida'
+  ];
+
+  let waMsg = `¡Hola nutricionista Poleth! 👋 Acabo de completar el diagnóstico nutricional en la página web y quisiera agendar una consulta.\n\n`;
+  waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
+  waMsg += `📋 *MIS RESPUESTAS DEL DIAGNÓSTICO*\n`;
+  waMsg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+
+  respuestas.forEach((r, idx) => {
+    waMsg += `${preguntas_labels[idx]}:\n→ ${r}\n\n`;
+  });
+
+  waMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
+  waMsg += `🤖 *DIAGNÓSTICO GENERADO POR IA*\n`;
+  waMsg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+  waMsg += texto;
+  waMsg += `\n\n━━━━━━━━━━━━━━━━━━━━\n`;
+  waMsg += `¿Cuándo tienes disponibilidad para mi consulta? 😊`;
+
+  const waUrl = `https://wa.me/96012216?text=${encodeURIComponent(waMsg)}`;
+  document.getElementById('diagWaBtn').href = waUrl;
+}
+
+document.getElementById('diagRestart').onclick = () => {
+  respuestas = []; preguntaActual = 0;
+  document.getElementById('diagResult').classList.remove('active');
+  document.getElementById('diagLoading').classList.remove('active');
+  document.getElementById('diagQuestionWrap').style.display='block';
+  const card = document.getElementById('diagCard');
+  card.style.opacity='1'; card.style.transform='none';
+  renderPregunta(0);
+};
+
+// Inicializar
+renderPregunta(0);
+
+
+/* ─── READING PROGRESS BAR ─── */
+window.addEventListener('scroll', () => {
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = (scrollY / max) * 100;
+  document.getElementById('readingProgress').style.width = pct + '%';
+});
+
+/* ─── ANIMATED COUNTERS ─── */
+function animateCounter(el) {
+  const target = parseInt(el.dataset.target);
+  const duration = 2000;
+  const step = target / (duration / 16);
+  let current = 0;
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = Math.floor(current);
+    if (current >= target) { el.textContent = target; clearInterval(timer); }
+  }, 16);
+}
+const counterObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.counter').forEach(animateCounter);
+      counterObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+const statsSection = document.querySelector('.stats-section');
+if (statsSection) counterObs.observe(statsSection);
+
+/* ─── PROCESO TIMELINE REVEAL ─── */
+const procesoObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('show'); });
+}, { threshold: 0.2 });
+document.querySelectorAll('.proceso-step').forEach(el => procesoObs.observe(el));
+
+/* ─── RIPPLE EFFECT ─── */
+document.querySelectorAll('.btn-primary, .cta-btn, .diag-result-cta, #floatWa').forEach(btn => {
+  btn.classList.add('ripple-btn');
+  btn.addEventListener('click', function(e) {
+    const rect = this.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = e.clientX - rect.left - size/2;
+    const y = e.clientY - rect.top - size/2;
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple-effect';
+    ripple.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px;`;
+    this.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  });
+});
+
+/* ─── MAGNETIC NAV LINKS ─── */
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('mousemove', function(e) {
+    const rect = this.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width/2) * 0.25;
+    const y = (e.clientY - rect.top  - rect.height/2) * 0.25;
+    this.style.transform = `translate(${x}px, ${y}px)`;
+  });
+  link.addEventListener('mouseleave', function() {
+    this.style.transform = '';
+  });
+});
+
+/* ─── PARALLAX HERO ─── */
+const heroParallax = document.querySelector('.hero-text');
+window.addEventListener('scroll', () => {
+  if (scrollY < window.innerHeight) {
+    const offset = scrollY * 0.3;
+    if (heroParallax) heroParallax.style.transform = `translateY(${offset}px)`;
+  }
+});
+
+/* ─── SOUND AMBIENT ─── */
+let audioCtx = null, gainNode = null, isPlaying = false;
+const soundBtn = document.getElementById('soundToggle');
+
+function createAmbient() {
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  gainNode = audioCtx.createGain();
+  gainNode.gain.value = 0;
+  gainNode.connect(audioCtx.destination);
+
+  // Gentle nature-like tones
+  const freqs = [174, 285, 396, 417];
+  freqs.forEach((freq, i) => {
+    const osc = audioCtx.createOscillator();
+    const oscGain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    oscGain.gain.value = 0.04;
+    osc.connect(oscGain);
+    oscGain.connect(gainNode);
+
+    // Slow LFO for movement
+    const lfo = audioCtx.createOscillator();
+    const lfoGain = audioCtx.createGain();
+    lfo.frequency.value = 0.05 + i * 0.02;
+    lfoGain.gain.value = freq * 0.008;
+    lfo.connect(lfoGain);
+    lfoGain.connect(osc.frequency);
+    lfo.start();
+    osc.start();
+  });
+}
+
+soundBtn.addEventListener('click', () => {
+  if (!audioCtx) createAmbient();
+  if (!isPlaying) {
+    gainNode.gain.linearRampToValueAtTime(0.4, audioCtx.currentTime + 2);
+    isPlaying = true;
+    soundBtn.classList.add('playing');
+    soundBtn.querySelector('.sound-icon').textContent = '🔊';
+  } else {
+    gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
+    isPlaying = false;
+    soundBtn.classList.remove('playing');
+    soundBtn.querySelector('.sound-icon').textContent = '🎵';
+  }
+});
+
+/* ─── MOBILE MENU ─── */
+function toggleMobile() {
+  const menu = document.getElementById('mobileMenu');
+  const ham = document.getElementById('hamburger');
+  menu.classList.toggle('open');
+  ham.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
+function closeMobile() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ─── CARD TILT 3D ─── */
+document.querySelectorAll('.servicio-card, .modalidad-card').forEach(card => {
+  card.addEventListener('mousemove', function(e) {
+    const rect = this.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width  - 0.5;
+    const y = (e.clientY - rect.top)  / rect.height - 0.5;
+    this.style.transform = `perspective(600px) rotateY(${x*8}deg) rotateX(${-y*8}deg) scale(1.02)`;
+  });
+  card.addEventListener('mouseleave', function() {
+    this.style.transform = '';
+    this.style.transition = 'transform 0.5s ease';
+  });
+});
+
+/* ─── SMOOTH SECTION HIGHLIGHTS ─── */
+const sectionObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      document.querySelectorAll('.nav-links a').forEach(a => {
+        a.style.color = '';
+        if (a.getAttribute('href') === '#' + id) {
+          a.style.color = 'var(--dorado)';
+        }
+      });
+    }
+  });
+}, { threshold: 0.4 });
+['sobre','servicios','condiciones','consulta','diagnostico'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) sectionObs.observe(el);
+});
+
+/* ─── HERO IMAGE SUBTLE FLOAT ─── */
+const heroPhoto = document.querySelector('.hero-photo');
+if (heroPhoto) {
+  document.addEventListener('mousemove', e => {
+    if (scrollY > window.innerHeight) return;
+    const x = (e.clientX / window.innerWidth  - 0.5) * 12;
+    const y = (e.clientY / window.innerHeight - 0.5) * 8;
+    heroPhoto.style.transform = `translate(${x}px, ${y}px)`;
+  });
+}
+
+/* ─── CURSOR TRAIL ─── */
+const trail = [];
+for(let i=0;i<6;i++){
+  const dot = document.createElement('div');
+  dot.style.cssText = `position:fixed;width:${4+i}px;height:${4+i}px;border-radius:50%;background:var(--dorado);opacity:${0.06+i*0.04};pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:left ${0.08+i*0.04}s,top ${0.08+i*0.04}s;`;
+  document.body.appendChild(dot);
+  trail.push(dot);
+}
+document.addEventListener('mousemove', e => {
+  trail.forEach(dot => { dot.style.left=e.clientX+'px'; dot.style.top=e.clientY+'px'; });
+});
+
+
+/* ─── BARRAS DE PESO ─── */
+const pesoObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.querySelectorAll('.peso-bar-fill').forEach(bar => bar.classList.add('animated'));
+      pesoObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.4 });
+const pesoBars = document.getElementById('pesoBars');
+if(pesoBars) pesoObs.observe(pesoBars);
+
+/* ─── DEPORTE CARDS ─── */
+const deporteObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('show'); });
+}, { threshold: 0.2 });
+document.querySelectorAll('.deporte-card').forEach(c => deporteObs.observe(c));
+
+/* ─── HABITOS STEPS ─── */
+const habitoObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('show'); });
+}, { threshold: 0.2 });
+document.querySelectorAll('.habito-step').forEach(c => habitoObs.observe(c));
+
+/* ─── VIRTUAL FEATURES ─── */
+const virtualObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.querySelectorAll('.virtual-feature').forEach(f => f.classList.add('show'));
+      virtualObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+const vf = document.getElementById('virtualFeatures');
+if(vf) virtualObs.observe(vf);
+
+/* ─── TESTIMONIOS ─── */
+const testObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('show'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.testimonio-card').forEach(c => testObs.observe(c));
+
+/* ─── STRIP ITEMS LINK TO SECTIONS ─── */
+document.querySelectorAll('.strip-item').forEach(item => {
+  const map = {
+    'Nutrición Personalizada': 'val-personalizada',
+    'Pérdida de Peso': 'val-peso',
+    'Nutrición Deportiva': 'val-deportiva',
+    'Hábitos Sostenibles': 'val-habitos',
+    'Consulta Virtual': 'val-virtual',
+    'Resultados Reales': 'val-resultados'
+  };
+  const text = item.textContent.trim();
+  if(map[text]) {
+    item.style.cursor = 'pointer';
+    item.addEventListener('click', () => {
+      document.getElementById(map[text]).scrollIntoView({ behavior:'smooth' });
+    });
+    item.title = 'Ver sección';
+  }
+});
+
+/* ─── 3D TILT EN VAL-SPLIT ─── */
+document.querySelectorAll('.deporte-card, .testimonio-card').forEach(card => {
+  card.addEventListener('mousemove', function(e) {
+    const rect = this.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width  - 0.5;
+    const y = (e.clientY - rect.top)  / rect.height - 0.5;
+    this.style.transform = `perspective(800px) rotateY(${x*6}deg) rotateX(${-y*6}deg) translateY(-6px)`;
+  });
+  card.addEventListener('mouseleave', function() {
+    this.style.transform = '';
+    this.style.transition = 'transform 0.5s ease, box-shadow 0.4s, border-color 0.4s, opacity 0.6s';
+  });
+});
+
+</script>
+</body>
+</html>
